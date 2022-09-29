@@ -1,6 +1,8 @@
-# SDL Template
-I feel like I keep remaking the same projects over and over again. This is a git repo to simply allow me or anyone who finds this
-to be able to clone this repo and get started with SDL2 and C. any other projects. Feel free to use this.
+# RLEngine
+An engine made for developing traditional roguelikes programmed in sdl/C++
+
+Still a wip and under lots of development
+
 
 # Build Instructions
 For Linux you must install `cmake` and `libsdl2-dev`.
