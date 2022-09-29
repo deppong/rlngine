@@ -7,15 +7,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 const int WIDTH = 800, HEIGHT = 800;
 
-int main(int argc, char**argv) {
-    int quit = 1;
-    SDL_Event e;
-    SDL_Init(SDL_INIT_VIDEO);
+int main(void) {
 
-    SDL_Window *window = SDL_CreateWindow("RLEngine Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, 0);
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    int quit = 1;
+
+    SDL_Event e;
+    if(SDL_Init(SDL_INIT_VIDEO)) {
+        fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
+        return -1;
+    }
+
+    SDL_Window *window = NULL;
+    SDL_Renderer *renderer = NULL;
+
+    if(SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS, &window, &renderer)) {
+        fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
+        return -1;
+    }
+
 
     while(quit) {
         SDL_PollEvent(&e);
@@ -32,5 +44,6 @@ int main(int argc, char**argv) {
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    SDL_Quit();
     return 0;
 }
