@@ -32,6 +32,6 @@ class Game {
         SDL_Window*     window;
         SDL_Renderer*   renderer;
         SDL_Texture*    framebuffer;
-        std::vector<uint32_t> framedata;
+        std::vector<uint32_t> m_framedata;
 
 };

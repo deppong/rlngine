@@ -41,8 +41,8 @@ void Game::Update() {
         }
 
         SDL_RenderClear(renderer);
-        // place framedata to the framebuffer
-        SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(framedata.data()), m_width * 4);
+        // place m_framedata to the framebuffer
+        SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
         SDL_RenderCopy(renderer, framebuffer, NULL, NULL);
         SDL_RenderPresent(renderer);
     }
@@ -70,8 +70,7 @@ int Game::Init() {
     }
 
     for (int i = 0; i < m_width*m_height; i++) {
-        // TODO: add utility function to properly pack the color
-        framedata.push_back(pack_color(0, 0, 0, 255));
+        m_framedata.push_back(pack_color(0, 0, 0, 255));
     }
     
 
@@ -85,14 +84,14 @@ uint32_t Game::pack_color(const uint8_t r, const uint8_t g, const uint8_t b, con
 }
 
 void Game::draw_pixel(int x, int y, uint32_t color) {
-    framedata[x + y*m_width] = color;
+    m_framedata[x + y*m_width] = color;
 }
 
 void Game::draw_rectangle(int x, int y, int w, int h, uint32_t color) {
     for (int i = 0; i < w; i++) {
         for(int j = 0; j < h; j++) {
             if (x+i >= m_width || y+j >= m_height) continue;
-            framedata[(x+i) + (y+j)*m_width] = color;
+            m_framedata[(x+i) + (y+j)*m_width] = color;
         }
     }
 }
