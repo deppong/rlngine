@@ -6,6 +6,7 @@
     #include "SDL.h"
 #endif
 #include <iostream>
+#include <vector>
 #include <stdlib.h>
 
 class Game {
@@ -27,6 +28,6 @@ class Game {
         SDL_Window*     window;
         SDL_Renderer*   renderer;
         SDL_Texture*    framebuffer;
-        uint32_t*       framedata;
+        std::vector<uint32_t> framedata;
 
 };
