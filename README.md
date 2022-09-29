@@ -1,12 +1,13 @@
 # RLEngine
-An engine made for developing traditional roguelikes programmed in sdl/C++
+A framework made for developing traditional roguelikes programmed in sdl/C++. The main goals of this program is to simplify making a tilebased game in C++ mostly for myself. You could potentially make a traditional roguelike using this simple framework around SDL 2.0
 
-Still a wip and under lots of development
-
+## Still a wip and under lots of development
 
 # Build Instructions
 For Linux you must install `cmake` and `libsdl2-dev`.
 The lib and include directories are only necessary for the windows build.
+
+This also depends on stb_image.h, which can be found in the include directory as well as [here](https://github.com/nothings/stb/blob/master/stb_image.h)
 
 run the commands
 

@@ -16,6 +16,10 @@ class Game {
         ~Game();
         void Update();
         int Init();
+    // rendering functions
+        uint32_t pack_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+        void draw_pixel(int x, int y, uint32_t color);
+        void draw_rectangle(int x, int y, int w, int h, uint32_t color);
 
     private:
     // game state data
