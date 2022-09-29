@@ -4,7 +4,7 @@
     #include <SDL.h>
 #endif
 
-#include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 
 
@@ -16,7 +16,7 @@ int main(void) {
 
     SDL_Event e;
     if(SDL_Init(SDL_INIT_VIDEO)) {
-        fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
+        std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
         return -1;
     }
 
@@ -24,7 +24,7 @@ int main(void) {
     SDL_Renderer *renderer = NULL;
 
     if(SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS, &window, &renderer)) {
-        fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
+        std::cerr << "Failed to initialize window: " << SDL_GetError() << std::endl;
         return -1;
     }
 
