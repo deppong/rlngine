@@ -31,6 +31,8 @@ void Game::Update() {
         // }
         draw_sprite(atlas.data, 0, 0, 160);
 
+        draw_sprite(atlas.get_texture(1, 0), 300, 300, atlas.tex_width);
+
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
         SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
