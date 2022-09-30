@@ -58,8 +58,8 @@ std::vector<uint32_t> Atlas::get_texture(int x, int y) {
     std::vector<uint32_t> tex;
     for (int j = 0; j < tex_width; j++) {
         for (int i = 0; i < tex_width; i++) {
-            int pixel_in_texture = x + y*tex_width;
-            tex.push_back(data[pixel_in_texture]);
+            int next_pixel = (i+x*tex_width) + (j+y*tex_width)*tex_width;
+            tex.push_back(data[next_pixel]);
         }
     }
     return tex;

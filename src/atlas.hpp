@@ -13,11 +13,11 @@ class Atlas {
 
         int load_texture(const char* filename);
         std::vector<uint32_t> get_texture(int x, int y);
+        std::vector<uint32_t> data;
 
     private:
         int texture_size, texture_count;
         int atlas_w, atlas_h, nchannels;
-        std::vector<uint32_t> data;
 };
 
 #endif

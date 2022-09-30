@@ -17,15 +17,6 @@ Game::~Game() {
 
 void Game::Update() {
 
-
-    // TODO: move these concepts to their own class so each tile can hold
-    // more data, like it's own coordinate, if it's passable, etc.
-    // also have a map class which contains a vector<tile_t> tiles
-
-    const int map_w = m_width / atlas.tex_width;
-    const int map_h = m_height / atlas.tex_width;
-
-    
     while(!m_quit) {
         SDL_PollEvent(&e);
         switch (e.type) {
@@ -35,10 +26,10 @@ void Game::Update() {
 
         // for (int i = 0; i < 16; i++) {
         //     for (int j = 0; j < 16; j++) {
-                draw_sprite(atlas.get_texture(0,4), 50, 50, atlas.tex_width);
-                
+        //         draw_sprite(atlas.get_texture(15,0), i*10, j*10, atlas.tex_width);
         //     }
         // }
+        draw_sprite(atlas.data, 0, 0, 160);
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
