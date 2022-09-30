@@ -16,6 +16,7 @@ Game::~Game() {
 }
 
 void Game::Update() {
+    srand(time(0));
 
     while(!m_quit) {
         SDL_PollEvent(&e);
@@ -24,14 +25,16 @@ void Game::Update() {
         }
 
 
-        // for (int i = 0; i < 16; i++) {
-        //     for (int j = 0; j < 16; j++) {
-        //         draw_sprite(atlas.get_texture(15,0), i*10, j*10, atlas.tex_width);
-        //     }
-        // }
-        draw_sprite(atlas.data, 0, 0, 160);
+        const int map_w = m_width / atlas.tex_width;
+        const int map_h = m_height / atlas.tex_width;
 
-        draw_sprite(atlas.get_texture(1, 0), 300, 300, atlas.tex_width);
+        for (int i = 0; i < map_h; i++) {
+            for (int j = 0; j < map_w; j++) {
+                int randx = rand() % 15;
+                int randy = rand() % 15;
+                draw_sprite(atlas.get_texture(randx, randy), j*10, i*10, atlas.tex_width);
+            }
+        }
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
@@ -69,7 +72,7 @@ int Game::Init() {
 
     SDL_SetWindowTitle(window, m_window_title);
 
-    if(atlas.load_texture("cp437_10x10.png")) {
+    if(atlas.load_texture("../../res/cp437_10x10.png")) {
         std::cerr << "Failed to load texture" << std::endl;
         return 1;
     }
@@ -94,6 +97,9 @@ void Game::draw_rectangle(int x, int y, int w, int h, uint32_t color) {
     }
 }
 
+// This seems redundant to the above function, and it is!
+// instead of some constant color, you just pull the color from whatever the 
+// texture had
 void Game::draw_sprite(std::vector<uint32_t> texture, int x, int y, int w) {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < w; j++) {
