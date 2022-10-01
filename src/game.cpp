@@ -18,23 +18,25 @@ Game::~Game() {
 void Game::Update() {
     srand(time(0));
 
+    const int map_w = m_width / atlas.tex_width;
+    const int map_h = m_height / atlas.tex_width;
+
+
     while(!m_quit) {
         SDL_PollEvent(&e);
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
         }
 
-
-        const int map_w = m_width / atlas.tex_width;
-        const int map_h = m_height / atlas.tex_width;
-
         for (int i = 0; i < map_h; i++) {
             for (int j = 0; j < map_w; j++) {
                 int randx = rand() % 15;
                 int randy = rand() % 15;
-                draw_sprite(atlas.get_texture(randx, randy), j*10, i*10, atlas.tex_width);
+                // draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
+                draw_sprite(atlas.textures[randx + randy*15], i*10, j*10, atlas.tex_width);
             }
         }
+
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer

@@ -50,6 +50,13 @@ int Atlas::load_texture(const char* filename) {
         }
     }
 
+    // yeah lets just ignore the fact that we have 4 for loops lol
+    for (int y = 0; y < 16; y++) {
+        for (int x = 0; x < 16; x++) {
+            textures.push_back(get_texture(x, y));
+        }
+    }
+
     stbi_image_free(pixels);
     return 0;
 }

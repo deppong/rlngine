@@ -5,4 +5,12 @@
 the main question here is which to do first!
 
 - [ ] develop tile based rendering system through sdl
-- [ ] load tileset as a texture atlas
+- [x] load tileset as a texture atlas
+
+
+# Software Architecture
+
+- Game
+    - Map
+    - Actors
+    - Atlas?

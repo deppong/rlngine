@@ -15,6 +15,12 @@ class Atlas {
         std::vector<uint32_t> get_texture(int x, int y);
         std::vector<uint32_t> data;
 
+        // The idea here is when you load the atlas, it will
+        // actually precompute all of the textures to this
+        // vector of textures. This will speed up the rendering 
+        // of any tiles/sprites/textures immensely!
+        std::vector<std::vector<uint32_t>> textures;
+
     private:
         int texture_size, texture_count;
         int atlas_w, atlas_h, nchannels;
