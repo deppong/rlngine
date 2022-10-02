@@ -15,6 +15,11 @@ Atlas::Atlas(int texture_width):
 
 Atlas::~Atlas() {};
 
+std::vector<uint32_t> Atlas::get_texture(int x, int y) {
+    return textures[x + y*tex_width];
+}
+
+
 int Atlas::load_texture(const char* filename) {
     
     unsigned char *pixels = stbi_load(filename, &atlas_w, &atlas_h, &nchannels, 0);
@@ -25,6 +30,12 @@ int Atlas::load_texture(const char* filename) {
     }
     
     std::cout << "width: " << atlas_w << " height: " << atlas_h << " channels: " << nchannels << std::endl;
+
+    if(nchannels != 4) {
+        std::cerr << "Image must have 32-bit color, support for lower bit color will be available in the future" << std::endl;
+        stbi_image_free(pixels);
+        return -1;
+    }
 
     if(atlas_w != atlas_h) {
         std::cerr << "Atlas must contain square textures packed in a square shape (ie, width of atlas must equal the height" << std::endl;
@@ -38,7 +49,9 @@ int Atlas::load_texture(const char* filename) {
 
     std::cout << pixels[0] << std::endl;
 
-    // fill data vector with pixel data
+    // TODO: merge this group of loops with the lower, as
+    // there is really no need to store the original atlas once it's
+    // been processed into the list of tiles
     for (int y = 0; y < atlas_h; y++) {
         for (int x = 0; x < atlas_w; x++) {
             uint8_t r = pixels[(x + y*atlas_w) * 4 + 0];
@@ -51,9 +64,10 @@ int Atlas::load_texture(const char* filename) {
     }
 
     // yeah lets just ignore the fact that we have 4 for loops lol
+    // at least we only have to do this once
     for (int y = 0; y < 16; y++) {
         for (int x = 0; x < 16; x++) {
-            textures.push_back(get_texture(x, y));
+            textures.push_back(get_texture_from_atlas(x, y));
         }
     }
 
@@ -61,7 +75,8 @@ int Atlas::load_texture(const char* filename) {
     return 0;
 }
 
-std::vector<uint32_t> Atlas::get_texture(int x, int y) {
+
+std::vector<uint32_t> Atlas::get_texture_from_atlas(int x, int y) {
     std::vector<uint32_t> tex;
     for (int j = 0; j < tex_width; j++) {
         for (int i = 0; i < tex_width; i++) {

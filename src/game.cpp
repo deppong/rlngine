@@ -33,7 +33,7 @@ void Game::Update() {
                 int randx = rand() % 15;
                 int randy = rand() % 15;
                 // draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
-                draw_sprite(atlas.textures[randx + randy*15], i*10, j*10, atlas.tex_width);
+                draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
             }
         }
 

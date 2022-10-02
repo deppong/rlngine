@@ -22,6 +22,7 @@ class Atlas {
         std::vector<std::vector<uint32_t>> textures;
 
     private:
+        std::vector<uint32_t> get_texture_from_atlas(int x, int y);
         int texture_size, texture_count;
         int atlas_w, atlas_h, nchannels;
 };
