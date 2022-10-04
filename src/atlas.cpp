@@ -1,6 +1,10 @@
 #include "atlas.hpp"
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#ifdef __unix__
+    #include "../include/stb_image.h"
+#elif defined _WIN32
+    #include "stb_image.h"
+#endif
 
 Atlas::Atlas(int texture_width):
     texture_size(0),

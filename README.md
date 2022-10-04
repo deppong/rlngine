@@ -26,3 +26,5 @@ cmake --build .
 ```
 
 On windows, be sure the SDL2.dll is in the same directory as the executable before executing. This file can be found in the lib directory
+Also on windows, when running, make sure the directory you are running from is `.../rlngine/build/Debug/rlngine.exe`, and for linux currently
+on this build you also need move the rlngine executable to a secondary directory inside of the `build` directory
