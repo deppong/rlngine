@@ -1,11 +1,18 @@
 cmake_minimum_required(VERSION 3.18)
 
+set(CMAKE_CXX_STANDARD 17)
+
 project(rlngine)
 
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} .)
 
-add_executable(rlngine main.cpp game.cpp atlas.cpp)
+add_executable(rlngine 
+    main.cpp
+    game.cpp
+    atlas.cpp
+    component_manager.cpp)
+
 if(MSVC)
     target_link_libraries(rlngine ${SDL2_LIBRARIES})
     target_compile_options(rlngine PRIVATE /W4)

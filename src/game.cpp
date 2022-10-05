@@ -1,4 +1,5 @@
 #include "game.hpp"
+#include "component_manager.hpp"
 
 Game::Game(int width, int height, char* window_title):
     m_width(width),
@@ -78,6 +79,18 @@ int Game::Init() {
         std::cerr << "Failed to load texture" << std::endl;
         return 1;
     }
+
+    component_t drawable = {{
+        {"tile_x", 1},
+        {"tile_y", 0},
+        {"color", pack_color(100, 0, 100, 255)}
+    }};
+
+    component_t transform = {{
+        {"x", 10},
+        {"y", 10}
+    }};
+
     
     return 0;
 }
