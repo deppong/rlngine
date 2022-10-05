@@ -34,6 +34,9 @@ class Game {
         SDL_Renderer*   renderer;
         SDL_Texture*    framebuffer;
         std::vector<uint32_t> m_framedata;
+    
+    // world data
+        std::vector<entity_t> entities;
 
 };
 

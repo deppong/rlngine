@@ -16,18 +16,11 @@ Game::~Game() {
 }
 
 void Game::Update() {
-    srand(time(0));
 
-    const int map_w = m_width / atlas.tex_width;
-    const int map_h = m_height / atlas.tex_width;
-
+    // this seems naive, and is pretty tightly coupled
     entity_t player = entity_t(40, 40, '@', COLOR_WHITE, COLOR_BLACK);
-
-    entity_t kobold = entity_t(3, 20, 'k', COLOR_MAROON, COLOR_BLACK);
-
+    entity_t kobold = entity_t(3, 20, 'k',  COLOR_RED,  COLOR_BLACK);
     entity_t goblin = entity_t(30, 60, 'g', COLOR_GREEN, COLOR_BLACK);
-
-    std::vector<entity_t> entities;
 
     entities.push_back(player);
     entities.push_back(kobold);
@@ -35,6 +28,7 @@ void Game::Update() {
 
     // main update loop
     while(!m_quit) {
+        // events
         SDL_PollEvent(&e);
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
@@ -86,6 +80,8 @@ int Game::Init() {
         std::cerr << "Failed to load texture" << std::endl;
         return 1;
     }
+
+    srand(time(0));
     
     return 0;
 }
