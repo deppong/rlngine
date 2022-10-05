@@ -8,7 +8,7 @@ uint32_t pack_color(const uint8_t r, const uint8_t g, const uint8_t b, const uin
 }
 
 // Dark colors
-static const uint32_t COLOR_BLACK  = pack_color(  0,   0,   0, 255);
+static const uint32_t COLOR_BLACK   = pack_color(  0,   0,   0, 255);
 static const uint32_t COLOR_MAROON  = pack_color(128,   0,   0, 255);
 static const uint32_t COLOR_GREEN   = pack_color(  0, 128,   0, 255);
 static const uint32_t COLOR_NAVY    = pack_color(  0,   0, 128, 255);
