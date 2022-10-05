@@ -1,11 +1,14 @@
 #ifndef ATLAS_HPP
 #define ATLAS_HPP
 
+#include "color.hpp"
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <stdlib.h>
 #include <array>
+
 
 class Atlas {
     public:
@@ -13,9 +16,10 @@ class Atlas {
         Atlas(int texture_width);
         ~Atlas();
 
-        int load_texture(const char* filename);
+        int load_atlas(const char* filename);
         std::vector<uint32_t> get_texture(int x, int y);
         std::vector<uint32_t> from_char(uint16_t c);
+        std::vector<uint32_t> set_color(std::vector<uint32_t> tex, uint32_t fg, uint32_t bg);
         std::vector<uint32_t> data;
 
         // The idea here is when you load the atlas, it will

@@ -21,6 +21,11 @@ void Game::Update() {
     const int map_w = m_width / atlas.tex_width;
     const int map_h = m_height / atlas.tex_width;
 
+    draw_sprite(atlas.set_color(atlas.from_char('T'), COLOR_FUCHSIA, COLOR_BLACK), 0*10, 0*10, atlas.tex_width);
+    draw_sprite(atlas.set_color(atlas.from_char('e'), COLOR_FUCHSIA, COLOR_BLACK), 1*10, 0*10, atlas.tex_width);
+    draw_sprite(atlas.set_color(atlas.from_char('s'), COLOR_FUCHSIA, COLOR_BLACK), 2*10, 0*10, atlas.tex_width);
+    draw_sprite(atlas.set_color(atlas.from_char('t'), COLOR_FUCHSIA, COLOR_BLACK), 3*10, 0*10, atlas.tex_width);
+    draw_sprite(atlas.set_color(atlas.from_char(L'\u263a'), COLOR_OLIVE, COLOR_BLACK), 4*10, 0*10, atlas.tex_width);
 
     // main update loop
     while(!m_quit) {
@@ -28,13 +33,6 @@ void Game::Update() {
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
         }
-
-        // draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
-        draw_sprite(atlas.from_char('T'), 0*10, 0*10, atlas.tex_width);
-        draw_sprite(atlas.from_char('e'), 1*10, 0*10, atlas.tex_width);
-        draw_sprite(atlas.from_char('s'), 2*10, 0*10, atlas.tex_width);
-        draw_sprite(atlas.from_char('t'), 3*10, 0*10, atlas.tex_width);
-        draw_sprite(atlas.from_char(L'\u263a'), 4*10, 0*10, atlas.tex_width);
 
 
         SDL_RenderClear(renderer);
@@ -73,7 +71,7 @@ int Game::Init() {
 
     SDL_SetWindowTitle(window, m_window_title);
 
-    if(atlas.load_texture("../../res/cp437_10x10.png")) {
+    if(atlas.load_atlas("../../res/cp437_10x10.png")) {
         std::cerr << "Failed to load texture" << std::endl;
         return 1;
     }

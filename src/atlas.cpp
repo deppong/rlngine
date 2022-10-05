@@ -33,12 +33,24 @@ std::vector<uint32_t> Atlas::from_char(uint16_t c) {
     // yikes this is a mouthful, basically it's just finding the char value supplied in the big table
     // listed in atlas.hpp
     auto index = std::distance(CP437.begin(), search);
-    std::cout << c << ": " << index << std::endl;
     return textures[index];
 }
 
+std::vector<uint32_t> Atlas::set_color(std::vector<uint32_t> tex, uint32_t fg, uint32_t bg) {
+    std::vector<uint32_t> new_tex;
+    for (uint32_t byte : tex) {
+        if (byte == COLOR_BLACK)  {
+            new_tex.push_back(bg);
+        } else {
+            new_tex.push_back(fg);
+        }
+    }
 
-int Atlas::load_texture(const char* filename) {
+    return new_tex;
+}
+
+
+int Atlas::load_atlas(const char* filename) {
     
     unsigned char *pixels = stbi_load(filename, &atlas_w, &atlas_h, &nchannels, 0);
     if(!pixels) {
