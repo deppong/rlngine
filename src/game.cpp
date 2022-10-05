@@ -22,20 +22,20 @@ void Game::Update() {
     const int map_h = m_height / atlas.tex_width;
 
 
+    // main update loop
     while(!m_quit) {
         SDL_PollEvent(&e);
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
         }
 
-        for (int i = 0; i < map_h; i++) {
-            for (int j = 0; j < map_w; j++) {
-                int randx = rand() % 15;
-                int randy = rand() % 15;
-                // draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
-                draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
-            }
-        }
+        // draw_sprite(atlas.get_texture(randx, randy), i*10, j*10, atlas.tex_width);
+        draw_sprite(atlas.from_char('T'), 0*10, 0*10, atlas.tex_width);
+        draw_sprite(atlas.from_char('e'), 1*10, 0*10, atlas.tex_width);
+        draw_sprite(atlas.from_char('s'), 2*10, 0*10, atlas.tex_width);
+        draw_sprite(atlas.from_char('t'), 3*10, 0*10, atlas.tex_width);
+        draw_sprite(atlas.from_char(0x2320), 4*10, 0*10, atlas.tex_width);
+        draw_sprite(atlas.from_char(0x2321), 4*10, 1*10, atlas.tex_width);
 
 
         SDL_RenderClear(renderer);

@@ -1,4 +1,5 @@
 #include "atlas.hpp"
+
 #define STB_IMAGE_IMPLEMENTATION
 #ifdef __unix__
     #include "../include/stb_image.h"
@@ -21,6 +22,16 @@ Atlas::~Atlas() {};
 
 std::vector<uint32_t> Atlas::get_texture(int x, int y) {
     return textures[x + y*tex_width];
+}
+
+std::vector<uint32_t> Atlas::from_char(int c) {
+    if (std::find(CP437.begin(), CP437.end(), c) == CP437.end()) {
+        std::cerr << "character not found in cp437!\ncharacter searched: " << (char)c << std::endl;
+        return textures[0];
+    }
+    // yikes this is a mouthful, basically it's just finding the char value supplied in the big table
+    // listed in atlas.hpp
+    return textures[std::distance(CP437.begin(), std::find(CP437.begin(), CP437.end(), c))];
 }
 
 

@@ -3,9 +3,7 @@
 
 #include <stdint.h>
 
-uint32_t pack_color(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a) {
-    return (a<<24) + (b<<16) + (g<<8) + r;
-}
+uint32_t pack_color(const uint8_t r, const uint8_t g, const uint8_t b, const uint8_t a);
 
 // Dark colors
 static const uint32_t COLOR_BLACK   = pack_color(  0,   0,   0, 255);
