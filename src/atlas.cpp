@@ -24,14 +24,17 @@ std::vector<uint32_t> Atlas::get_texture(int x, int y) {
     return textures[x + y*tex_width];
 }
 
-std::vector<uint32_t> Atlas::from_char(int c) {
-    if (std::find(CP437.begin(), CP437.end(), c) == CP437.end()) {
-        std::cerr << "character not found in cp437!\ncharacter searched: " << (char)c << std::endl;
+std::vector<uint32_t> Atlas::from_char(uint16_t c) {
+    auto search = std::find(CP437.begin(), CP437.end(), c);
+    if (search == CP437.end()) {
+        std::cerr << "character not found in cp437!\ncharacter searched: " << c << std::endl;
         return textures[0];
     }
     // yikes this is a mouthful, basically it's just finding the char value supplied in the big table
     // listed in atlas.hpp
-    return textures[std::distance(CP437.begin(), std::find(CP437.begin(), CP437.end(), c))];
+    auto index = std::distance(CP437.begin(), search);
+    std::cout << c << ": " << index << std::endl;
+    return textures[index];
 }
 
 

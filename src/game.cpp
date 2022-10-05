@@ -34,8 +34,7 @@ void Game::Update() {
         draw_sprite(atlas.from_char('e'), 1*10, 0*10, atlas.tex_width);
         draw_sprite(atlas.from_char('s'), 2*10, 0*10, atlas.tex_width);
         draw_sprite(atlas.from_char('t'), 3*10, 0*10, atlas.tex_width);
-        draw_sprite(atlas.from_char(0x2320), 4*10, 0*10, atlas.tex_width);
-        draw_sprite(atlas.from_char(0x2321), 4*10, 1*10, atlas.tex_width);
+        draw_sprite(atlas.from_char(L'\u263a'), 4*10, 0*10, atlas.tex_width);
 
 
         SDL_RenderClear(renderer);
