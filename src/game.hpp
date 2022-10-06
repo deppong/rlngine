@@ -8,6 +8,7 @@
 #endif
 #include "atlas.hpp"
 #include "entity.hpp"
+#include "world.hpp"
 
 class Game {
     public:
@@ -16,6 +17,7 @@ class Game {
         ~Game();
         void Update();
         int Init();
+
     // rendering functions
         void draw_pixel(int x, int y, uint32_t color);
         void draw_rectangle(int x, int y, int w, int h, uint32_t color);

@@ -4,10 +4,15 @@ A framework made for developing traditional roguelikes programmed in sdl/C++. Th
 ## Still a wip and under lots of development
 
 # Build Instructions
-For Linux you must install `cmake` and `libsdl2-dev`.
-The lib and include directories are only necessary for the windows build.
 
-This also depends on stb_image.h, which can be found in the include directory as well as [here](https://github.com/nothings/stb/blob/master/stb_image.h)
+Libraries Used
+- [SDL2](https://www.libsdl.org/)
+- [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
+- [entt](https://github.com/skypjack/entt)
+
+For Linux you must install `cmake` and `libsdl2-dev`.
+The lib directory is only necessary for the windows build.
+Only `stb_image.h` and `entt.h` are required for linux, all SDL header files are covered through the `libsdl2-dev` package
 
 run the commands
 

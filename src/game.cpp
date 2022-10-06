@@ -36,7 +36,7 @@ void Game::Update() {
 
         for(entity_t e : entities) {
             // rendering
-            draw_sprite(atlas.set_color(atlas.from_char(e.chr), e.color, e.bg_color), e.x*atlas.tex_width, e.y*atlas.tex_width, atlas.tex_width);
+            draw_sprite(atlas.set_color(atlas.get_tile(e.chr), e.color, e.bg_color), e.x*atlas.tex_width, e.y*atlas.tex_width, atlas.tex_width);
         }
 
 

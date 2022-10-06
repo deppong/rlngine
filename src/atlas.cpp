@@ -20,21 +20,22 @@ Atlas::Atlas(int texture_width):
 
 Atlas::~Atlas() {};
 
-std::vector<uint32_t> Atlas::get_texture(int x, int y) {
-    return textures[x + y*tex_width];
+std::vector<uint32_t> Atlas::get_tile(int tile) {
+    return textures[tile];
 }
 
-std::vector<uint32_t> Atlas::from_char(uint16_t c) {
-    auto search = std::find(CP437.begin(), CP437.end(), c);
-    if (search == CP437.end()) {
-        std::cerr << "character not found in cp437!\ncharacter searched: " << c << std::endl;
-        return textures[0];
-    }
-    // yikes this is a mouthful, basically it's just finding the char value supplied in the big table
-    // listed in atlas.hpp
-    auto index = std::distance(CP437.begin(), search);
-    return textures[index];
-}
+// deprecated?
+// std::vector<uint32_t> Atlas::from_char(uint16_t c) {
+//     auto search = std::find(CP437.begin(), CP437.end(), c);
+//     if (search == CP437.end()) {
+//         std::cerr << "character not found in cp437!\ncharacter searched: " << c << std::endl;
+//         return textures[0];
+//     }
+//     // yikes this is a mouthful, basically it's just finding the char value supplied in the big table
+//     // listed in atlas.hpp
+//     auto index = std::distance(CP437.begin(), search);
+//     return textures[index];
+// }
 
 std::vector<uint32_t> Atlas::set_color(std::vector<uint32_t> tex, uint32_t fg, uint32_t bg) {
     std::vector<uint32_t> new_tex;
