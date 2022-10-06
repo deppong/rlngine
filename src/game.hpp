@@ -38,7 +38,7 @@ class Game {
         std::vector<uint32_t> m_framedata;
     
     // world data
-        std::vector<entity_t> entities;
+        World world;
 
 };
 

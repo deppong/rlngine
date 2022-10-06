@@ -18,7 +18,7 @@ struct TransformComponent {
 };
 
 struct RenderComponent  {
-    char tile;
+    int tile;
     uint32_t color, bg_color;
 
     RenderComponent() = default;

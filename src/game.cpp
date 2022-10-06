@@ -5,7 +5,8 @@ Game::Game(int width, int height, char* window_title):
     m_height(height),
     m_window_title(window_title),
     m_quit(0),
-    atlas(10)
+    atlas(10),
+    world(width, height, 10)
 {
 }
 
@@ -13,39 +14,6 @@ Game::~Game() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-}
-
-void Game::Update() {
-
-    // this seems naive, and is pretty tightly coupled
-    entity_t player = entity_t(40, 40, '@', COLOR_WHITE, COLOR_BLACK);
-    entity_t kobold = entity_t(3, 20, 'k',  COLOR_RED,  COLOR_BLACK);
-    entity_t goblin = entity_t(30, 60, 'g', COLOR_GREEN, COLOR_BLACK);
-
-    entities.push_back(player);
-    entities.push_back(kobold);
-    entities.push_back(goblin);
-
-    // main update loop
-    while(!m_quit) {
-        // events
-        SDL_PollEvent(&e);
-        switch (e.type) {
-            case SDL_QUIT: m_quit=1; break;
-        }
-
-        for(entity_t e : entities) {
-            // rendering
-            draw_sprite(atlas.set_color(atlas.get_tile(e.chr), e.color, e.bg_color), e.x*atlas.tex_width, e.y*atlas.tex_width, atlas.tex_width);
-        }
-
-
-        SDL_RenderClear(renderer);
-        // place m_framedata to the framebuffer
-        SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
-        SDL_RenderCopy(renderer, framebuffer, NULL, NULL);
-        SDL_RenderPresent(renderer);
-    }
 }
 
 int Game::Init() {
@@ -82,9 +50,53 @@ int Game::Init() {
     }
 
     srand(time(0));
-    
+
     return 0;
 }
+
+void Game::Update() {
+
+
+    entt::entity player = world.m_registry.create();
+    world.m_registry.emplace<TransformComponent>(player, 40, 40);
+    world.m_registry.emplace<RenderComponent>(player, '@', COLOR_WHITE, COLOR_BLACK);
+
+    entt::entity goblin = world.m_registry.create();
+    world.m_registry.emplace<TransformComponent>(goblin, 3, 3);
+    world.m_registry.emplace<RenderComponent>(goblin, 'g', COLOR_LIME, COLOR_BLACK);
+
+    entt::entity kobold = world.m_registry.create();
+    world.m_registry.emplace<TransformComponent>(kobold, 4, 4);
+    world.m_registry.emplace<RenderComponent>(kobold, 'k', COLOR_FUCHSIA, COLOR_BLACK);
+
+    // main update loop
+    while(!m_quit) {
+        // events
+        SDL_PollEvent(&e);
+        switch (e.type) {
+            case SDL_QUIT: m_quit=1; break;
+        }
+
+        // render loop
+        auto view = world.m_registry.view<TransformComponent, RenderComponent>();
+        for (auto entity : view) {
+
+            auto&[transform, tile] = view.get<TransformComponent, RenderComponent>(entity);
+
+            draw_sprite(atlas.set_color(atlas.get_tile(tile.tile), tile.color, tile.bg_color), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+        }
+
+        SDL_RenderClear(renderer);
+        // place m_framedata to the framebuffer
+        SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
+        SDL_RenderCopy(renderer, framebuffer, NULL, NULL);
+        SDL_RenderPresent(renderer);
+    }
+}
+
+
+// --------------------------
+// Rendering helper functions
 
 void Game::draw_pixel(int x, int y, uint32_t color) {
     m_framedata[x + y*m_width] = color;

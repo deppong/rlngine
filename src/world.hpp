@@ -6,10 +6,12 @@
 
 class World {
     public:
-        World(int width, int height, int tex_width);
+        World(int width, int height, int tile_width);
         ~World();
 
         entt::registry m_registry;
+
+        int world_w, world_h;
 
     private:
 };

@@ -18,7 +18,7 @@ class Atlas {
 
         int load_atlas(const char* filename);
         std::vector<uint32_t> get_tile(int tile);
-        std::vector<uint32_t> from_char(uint16_t c);
+        //std::vector<uint32_t> from_char(uint16_t c);
         std::vector<uint32_t> set_color(std::vector<uint32_t> tex, uint32_t fg, uint32_t bg);
         std::vector<uint32_t> data;
 
