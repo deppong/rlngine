@@ -67,7 +67,7 @@ void Game::Update() {
     world.m_registry.emplace<TransformComponent>(goblin, 3, 3);
     world.m_registry.emplace<RenderComponent>(goblin, 'g', COLOR_LIME, COLOR_BLACK);
     world.m_registry.emplace<PhysicsComponent>(goblin, 0, 0);
-    world.m_registry.emplace<ControllableComponent>(goblin, false);
+    world.m_registry.emplace<ControllableComponent>(goblin, true);
 
     entt::entity kobold = world.m_registry.create();
     world.m_registry.emplace<TransformComponent>(kobold, 4, 4);
@@ -145,6 +145,7 @@ void Game::draw_rectangle(int x, int y, int w, int h, uint32_t color) {
     for (int i = 0; i < w; i++) {
         for(int j = 0; j < h; j++) {
             if (x+i >= m_width || y+j >= m_height) continue;
+            if(x+i <= 0 || y+j <= 0) continue;
             m_framedata[(x+i) + (y+j)*m_width] = color;
         }
     }
@@ -157,6 +158,7 @@ void Game::draw_sprite(std::vector<uint32_t> texture, int x, int y, int w) {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < w; j++) {
             if(x+i >= m_width || y+j >= m_height) continue;
+            if(x+i <= 0 || y+j <= 0) continue;
             m_framedata[(x+i) + (y+j)*m_width] = texture[i + j*w];
         }
     }

@@ -1,5 +1,26 @@
 # TODO
 
+
+# Minor Features next
+- [ ] restructure systems implementation?
+- [ ] rename and refactor world class, (give it a reason to exist)
+    -> is it a scene, is it the entire world? does it have scenes or chunks inside of it?
+
+# Large Features next!
+- [ ] add some sort of map or scenes for each section of the world
+    - [ ] map generation! (can't be a rogue-like right?)
+- [ ] UI system
+    - [ ] basic rectangle on top of render system. 
+        Render order: no_collision(floor, decorations)->collision_tiles(player enemies)->UI
+
+# Bugfixing
+
+- [x] when walking straight up, there is an out of bounds exception.
+- [ ] game.cpp(52,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+- [ ] other warnings possibly related to the auto &[component, component] = group.get<>(); sequence
+
+
+
 # Software Architecture
 
 I am seriously considering utilizing an ECS, however due to the complexity of the issue I kind of want 
