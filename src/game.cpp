@@ -5,8 +5,8 @@ Game::Game(int width, int height, char* window_title):
     m_height(height),
     m_window_title(window_title),
     m_quit(0),
-    atlas(10),
-    world(width, height, 10)
+    atlas(16),
+    world(width, height, 16)
 {
 }
 
@@ -44,7 +44,7 @@ int Game::Init() {
 
     SDL_SetWindowTitle(window, m_window_title);
 
-    if(atlas.load_atlas("../../res/cp437_10x10.png")) {
+    if(atlas.load_atlas("../../res/Md_curses_16x16.png")) {
         std::cerr << "Failed to load texture" << std::endl;
         return 1;
     }
@@ -60,21 +60,59 @@ void Game::Update() {
     entt::entity player = world.m_registry.create();
     world.m_registry.emplace<TransformComponent>(player, 40, 40);
     world.m_registry.emplace<RenderComponent>(player, '@', COLOR_WHITE, COLOR_BLACK);
+    world.m_registry.emplace<PhysicsComponent>(player, 0, 0);
+    world.m_registry.emplace<ControllableComponent>(player, true);
 
     entt::entity goblin = world.m_registry.create();
     world.m_registry.emplace<TransformComponent>(goblin, 3, 3);
     world.m_registry.emplace<RenderComponent>(goblin, 'g', COLOR_LIME, COLOR_BLACK);
+    world.m_registry.emplace<PhysicsComponent>(goblin, 0, 0);
+    world.m_registry.emplace<ControllableComponent>(goblin, false);
 
     entt::entity kobold = world.m_registry.create();
     world.m_registry.emplace<TransformComponent>(kobold, 4, 4);
     world.m_registry.emplace<RenderComponent>(kobold, 'k', COLOR_FUCHSIA, COLOR_BLACK);
+    world.m_registry.emplace<PhysicsComponent>(kobold, 0, 0);
 
     // main update loop
     while(!m_quit) {
+        // clear frambuffer
+        for (size_t i = 0; i < m_width * m_height; i++) {
+            m_framedata[i] = COLOR_BLACK;
+        }
+
         // events
         SDL_PollEvent(&e);
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
+
+            case SDL_KEYDOWN:
+                auto group = world.m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
+                for (auto entity : group) {
+                    auto& [control, physics] = group.get<ControllableComponent, PhysicsComponent>(entity);
+                    if (control.inControl) {
+                        switch (e.key.keysym.sym) {
+                            case SDLK_h: physics.vel_x = -1; break;
+                            case SDLK_j: physics.vel_y =  1; break;
+                            case SDLK_k: physics.vel_y = -1; break;
+                            case SDLK_l: physics.vel_x =  1; break;
+                        }
+
+                    }
+                }
+            break;
+        }
+
+        // physics loop
+        auto group = world.m_registry.group<TransformComponent>(entt::get<PhysicsComponent>);
+        for (auto entity : group) {
+            auto&[transform, physics] = group.get<TransformComponent, PhysicsComponent>(entity);
+
+            transform.x += physics.vel_x;
+            transform.y += physics.vel_y;
+
+            physics.vel_x = 0;
+            physics.vel_y = 0;
         }
 
         // render loop
@@ -85,6 +123,7 @@ void Game::Update() {
 
             draw_sprite(atlas.set_color(atlas.get_tile(tile.tile), tile.color, tile.bg_color), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
         }
+
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
