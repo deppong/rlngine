@@ -67,7 +67,7 @@ void Game::Update() {
     world.m_registry.emplace<TransformComponent>(goblin, 3, 3);
     world.m_registry.emplace<RenderComponent>(goblin, 'g', COLOR_LIME, COLOR_BLACK);
     world.m_registry.emplace<PhysicsComponent>(goblin, 0, 0);
-    world.m_registry.emplace<ControllableComponent>(goblin, true);
+    world.m_registry.emplace<ControllableComponent>(goblin, false);
 
     entt::entity kobold = world.m_registry.create();
     world.m_registry.emplace<TransformComponent>(kobold, 4, 4);

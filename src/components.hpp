@@ -1,3 +1,4 @@
+#pragma once
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
 
@@ -49,4 +50,13 @@ struct ControllableComponent {
     {};
 };
 
-#endif
+struct StatsComponent {
+    int STR, DEX, CON;
+
+    StatsComponent() = default;
+    StatsComponent(const int& str, const int& dex, const int& con):
+        STR(str), DEX(dex), CON(con)
+    {};
+};
+
+#endif // COMPONENTS_HPP

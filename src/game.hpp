@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GAME_HPP
 #define GAME_HPP
 
@@ -7,7 +8,6 @@
     #include "SDL.h"
 #endif
 #include "atlas.hpp"
-#include "entity.hpp"
 #include "world.hpp"
 
 class Game {
@@ -42,4 +42,4 @@ class Game {
 
 };
 
-#endif
+#endif // GAME_HPP

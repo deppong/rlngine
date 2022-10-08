@@ -1,3 +1,4 @@
+#pragma once
 #ifndef WORLD_HPP
 #define WORLD_HPP
 
@@ -16,4 +17,4 @@ class World {
     private:
 };
 
-#endif
+#endif // WORLD_HPP

@@ -5,8 +5,11 @@
 - [ ] restructure systems implementation?
 - [ ] rename and refactor world class, (give it a reason to exist)
     -> is it a scene, is it the entire world? does it have scenes or chunks inside of it?
+    -> maybe zones of some sort ?
+
 
 # Large Features next!
+- [ ] Add an entity loader from a file format. 
 - [ ] add some sort of map or scenes for each section of the world
     - [ ] map generation! (can't be a rogue-like right?)
 - [ ] UI system

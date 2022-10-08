@@ -1,3 +1,4 @@
+#pragma once
 #ifndef COLOR_HPP
 #define COLOR_HPP
 
@@ -26,4 +27,4 @@ static const uint32_t COLOR_AQUA    = pack_color(  0, 255, 255, 255);
 static const uint32_t COLOR_WHITE   = pack_color(255, 255, 255, 255);
 
 
-#endif
+#endif // COLOR_HPP
