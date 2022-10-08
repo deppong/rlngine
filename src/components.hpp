@@ -25,12 +25,13 @@ struct TransformComponent {
 struct RenderComponent  {
     int tile;
     uint32_t color, bg_color;
-    // this should be different probably
-    bool background;
 
     RenderComponent() = default;
-    RenderComponent(const char& chr, const uint32_t& color, const uint32_t& bg_color, const bool& background):
-        tile(chr), color(color), bg_color(bg_color), background(background){};
+    RenderComponent(const int& chr, const uint32_t& color, const uint32_t& bg_color):
+        tile(chr), color(color), bg_color(bg_color){};
+};
+
+struct DecorativeComponent {
 };
 
 struct PhysicsComponent {

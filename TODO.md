@@ -3,6 +3,7 @@
 # Right now!
 - [x] Fix the set_color method in atlas! This is super slow and super bad
     - This is now somewhat fixed, to the point where when we are coloring the texture or not it is still as slow as it would be anyways
+- [x] can't index elements past 127 from atlas.get_tile() through the render component... I WAS CASTING IT TO A CONST CHAR REFERENCE :(((())))
 
 # Minor Features next
 - [ ] restructure systems implementation?

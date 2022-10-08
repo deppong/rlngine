@@ -21,7 +21,7 @@ Atlas::Atlas(int texture_width):
 Atlas::~Atlas() {};
 
 std::vector<uint32_t> Atlas::get_tile(int tile) {
-    return textures[tile];
+    return textures.at(tile);
 }
 
 // deprecated?
@@ -96,11 +96,12 @@ int Atlas::load_atlas(const char* filename) {
 
     // yeah lets just ignore the fact that we have 4 for loops lol
     // at least we only have to do this once
-    for (int y = 0; y < 16; y++) {
-        for (int x = 0; x < 16; x++) {
+    for (int y = 0; y < (atlas_h/tex_width); y++) {
+        for (int x = 0; x < (atlas_w/tex_width); x++) {
             textures.push_back(get_texture_from_atlas(x, y));
         }
     }
+
 
     stbi_image_free(pixels);
     return 0;
