@@ -13,6 +13,7 @@ add_executable(rlngine
     atlas.cpp
     color.cpp
     world.cpp
+    zone.cpp
 )
 
 if(MSVC)

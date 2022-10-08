@@ -38,7 +38,7 @@ int Game::Init() {
     }
 
     for (int i = 0; i < m_width*m_height; i++) {
-        m_framedata.push_back(pack_color(0, 0, 0, 255));
+        m_framedata.push_back(COLOR_BLACK);
     }
     
 
@@ -57,22 +57,11 @@ int Game::Init() {
 void Game::Update() {
 
 
-    entt::entity player = world.m_registry.create();
-    world.m_registry.emplace<TransformComponent>(player, 40, 40);
-    world.m_registry.emplace<RenderComponent>(player, '@', COLOR_WHITE, COLOR_BLACK);
-    world.m_registry.emplace<PhysicsComponent>(player, 0, 0);
-    world.m_registry.emplace<ControllableComponent>(player, true);
-
-    entt::entity goblin = world.m_registry.create();
-    world.m_registry.emplace<TransformComponent>(goblin, 3, 3);
-    world.m_registry.emplace<RenderComponent>(goblin, 'g', COLOR_LIME, COLOR_BLACK);
-    world.m_registry.emplace<PhysicsComponent>(goblin, 0, 0);
-    world.m_registry.emplace<ControllableComponent>(goblin, false);
-
-    entt::entity kobold = world.m_registry.create();
-    world.m_registry.emplace<TransformComponent>(kobold, 4, 4);
-    world.m_registry.emplace<RenderComponent>(kobold, 'k', COLOR_FUCHSIA, COLOR_BLACK);
-    world.m_registry.emplace<PhysicsComponent>(kobold, 0, 0);
+    entt::entity player = world.zone.m_registry.create();
+    world.zone.m_registry.emplace<TransformComponent>(player, 10, 10);
+    world.zone.m_registry.emplace<RenderComponent>(player, '@', COLOR_WHITE, COLOR_BLACK);
+    world.zone.m_registry.emplace<PhysicsComponent>(player, 0, 0);
+    world.zone.m_registry.emplace<ControllableComponent>(player, true);
 
     // main update loop
     while(!m_quit) {
@@ -87,7 +76,8 @@ void Game::Update() {
             case SDL_QUIT: m_quit=1; break;
 
             case SDL_KEYDOWN:
-                auto group = world.m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
+            std::cout << "moved\n";
+                auto group = world.zone.m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
                 for (auto entity : group) {
                     auto& [control, physics] = group.get<ControllableComponent, PhysicsComponent>(entity);
                     if (control.inControl) {
@@ -104,9 +94,9 @@ void Game::Update() {
         }
 
         // physics loop
-        auto group = world.m_registry.group<TransformComponent>(entt::get<PhysicsComponent>);
-        for (auto entity : group) {
-            auto&[transform, physics] = group.get<TransformComponent, PhysicsComponent>(entity);
+        auto phys_group = world.zone.m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
+        for (auto entity : phys_group) {
+            auto&[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
 
             transform.x += physics.vel_x;
             transform.y += physics.vel_y;
@@ -116,12 +106,13 @@ void Game::Update() {
         }
 
         // render loop
-        auto view = world.m_registry.view<TransformComponent, RenderComponent>();
-        for (auto entity : view) {
+        auto group = world.zone.m_registry.group<TransformComponent>(entt::get<RenderComponent>);
+        for (auto entity : group) {
 
-            auto&[transform, tile] = view.get<TransformComponent, RenderComponent>(entity);
+            auto&[transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite(atlas.set_color(atlas.get_tile(tile.tile), tile.color, tile.bg_color), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+            // draw_sprite(atlas.set_color(atlas.get_tile(tile.tile), tile.color, tile.bg_color), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+            draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
         }
 
 

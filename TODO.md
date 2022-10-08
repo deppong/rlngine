@@ -1,5 +1,8 @@
 # TODO
 
+# Right now!
+- [ ] Fix the set_color method in atlas! This is super slow and super bad
+- [ ] after that checkout the SDL_LockTexture() for more rendering optimizations!
 
 # Minor Features next
 - [ ] restructure systems implementation?

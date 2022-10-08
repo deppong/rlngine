@@ -3,6 +3,9 @@
 #define ZONE_HPP
 
 #include "entt.hpp"
+#include "components.hpp"
+#include "color.hpp"
+#include <iostream>
 
 class Zone {
     public:
@@ -11,14 +14,15 @@ class Zone {
 
         // "map generation"?
         void set_tile(entt::entity entity);
+        void fill_zone(entt::entity entity);
+        void fill_zone_walls();
 
 
-        entt::registry get_registry();
-
-    private:
         entt::registry m_registry;
 
+    private:
         int m_width, m_height;
+
 
 };
 
