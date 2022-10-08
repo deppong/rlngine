@@ -13,6 +13,7 @@ Game::Game(int width, int height, char* window_title):
 Game::~Game() {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyTexture(framebuffer);
     SDL_Quit();
 }
 
@@ -31,6 +32,7 @@ int Game::Init() {
     }
 
     framebuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, m_width, m_height);
+    SDL_SetTextureBlendMode(framebuffer, SDL_BLENDMODE_NONE);
 
     if(!framebuffer) {
         std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
@@ -59,16 +61,17 @@ void Game::Update() {
 
     entt::entity player = world.zone.m_registry.create();
     world.zone.m_registry.emplace<TransformComponent>(player, 10, 10);
-    world.zone.m_registry.emplace<RenderComponent>(player, '@', COLOR_WHITE, COLOR_BLACK);
+    world.zone.m_registry.emplace<RenderComponent>(player, '@', COLOR_BLUE, COLOR_BLACK);
     world.zone.m_registry.emplace<PhysicsComponent>(player, 0, 0);
     world.zone.m_registry.emplace<ControllableComponent>(player, true);
 
     // main update loop
     while(!m_quit) {
+
         // clear frambuffer
-        for (size_t i = 0; i < m_width * m_height; i++) {
-            m_framedata[i] = COLOR_BLACK;
-        }
+        // for (size_t i = 0; i < m_width * m_height; i++) {
+        //     m_framedata[i] = COLOR_BLACK;
+        // }
 
         // events
         SDL_PollEvent(&e);
@@ -112,13 +115,15 @@ void Game::Update() {
             auto&[transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
             // draw_sprite(atlas.set_color(atlas.get_tile(tile.tile), tile.color, tile.bg_color), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
-            draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
+            // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
         }
 
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
         SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
+        // SDL_UnlockTexture(framebuffer);
         SDL_RenderCopy(renderer, framebuffer, NULL, NULL);
         SDL_RenderPresent(renderer);
     }
@@ -145,12 +150,25 @@ void Game::draw_rectangle(int x, int y, int w, int h, uint32_t color) {
 // This seems redundant to the above function, and it is!
 // instead of some constant color, you just pull the color from whatever the 
 // texture had
-void Game::draw_sprite(std::vector<uint32_t> texture, int x, int y, int w) {
+void Game::draw_sprite(std::vector<uint32_t> &texture, int x, int y, int w) {
     for (int i = 0; i < w; i++) {
         for (int j = 0; j < w; j++) {
             if(x+i >= m_width || y+j >= m_height) continue;
             if(x+i <= 0 || y+j <= 0) continue;
             m_framedata[(x+i) + (y+j)*m_width] = texture[i + j*w];
+        }
+    }
+}
+
+void Game::draw_sprite_color(std::vector<uint32_t> &texture, int x, int y, int w, uint32_t color, uint32_t bg_color) {
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < w; j++) {
+            if(x+i >= m_width || y+j >= m_height || x+i <= 0 || y+j <= 0) continue;
+            if (texture[i + j*w] == COLOR_WHITE) {
+                m_framedata[(x+i) + (y+j)*m_width] = color;
+            } else {
+                m_framedata[(x+i) + (y+j)*m_width] = bg_color;
+            }
         }
     }
 }

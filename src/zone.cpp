@@ -11,7 +11,7 @@ void Zone::fill_zone_walls() {
         for (int x = 0; x < m_width; x++) {
             entt::entity e = m_registry.create();
             m_registry.emplace<TransformComponent>(e, x, y);
-            m_registry.emplace<RenderComponent>(e, '#', COLOR_GRAY, COLOR_BLACK);
+            m_registry.emplace<RenderComponent>(e, 1, COLOR_GRAY, COLOR_BLACK, true);
             // m_registry.emplace<NameComponent>(e, "wall", "walls", "A solid slab of stone.");
         }
     }

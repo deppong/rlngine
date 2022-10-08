@@ -21,7 +21,8 @@ class Game {
     // rendering functions
         void draw_pixel(int x, int y, uint32_t color);
         void draw_rectangle(int x, int y, int w, int h, uint32_t color);
-        void draw_sprite(std::vector<uint32_t> tex, int x, int y, int w);
+        void draw_sprite(std::vector<uint32_t> &tex, int x, int y, int w);
+        void draw_sprite_color(std::vector<uint32_t> &tex, int x, int y, int w, uint32_t color, uint32_t bg_color);
 
     private:
     // game state data
