@@ -97,33 +97,35 @@ void Game::Update() {
         }
 
         // physics loop
-        // auto phys_group = world.zone.m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
-        // for (auto entity : phys_group) {
-        //     auto&[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
+        auto phys_group = world.zone.m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
+        for (auto entity : phys_group) {
+            auto&[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
 
-        //     transform.x += physics.vel_x;
-        //     transform.y += physics.vel_y;
+            transform.x += physics.vel_x;
+            transform.y += physics.vel_y;
 
-        //     physics.vel_x = 0;
-        //     physics.vel_y = 0;
-        // }
+            physics.vel_x = 0;
+            physics.vel_y = 0;
+        }
 
         // render loop
-        auto group = world.zone.m_registry.group<RenderComponent>(entt::get<TransformComponent>);
+        auto group = world.zone.m_registry.group<RenderComponent, TransformComponent>();
         for (auto entity : group) {
 
-            auto transform = group.get<TransformComponent>(entity);
-            auto tile = group.get<RenderComponent>(entity);
-            // auto&[transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
+            auto&[transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
-            // draw_sprite(atlas.set_color(atlas.get_tile(tile.tile), tile.color, tile.bg_color), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
             draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
             // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
         }
 
-        // the tile is clearly loaded into memory and can be displayed.
-        // this may have something to do with groups ?
-        draw_sprite(atlas.get_tile(189), 25*atlas.tex_width, 25*atlas.tex_width, atlas.tex_width);
+        auto bg_group = world.zone.m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
+        for (auto entity : bg_group) {
+
+            auto&[transform, tile] = bg_group.get<TransformComponent, RenderComponent>(entity);
+
+            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
+            // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+        }
 
 
         SDL_RenderClear(renderer);
