@@ -11,12 +11,12 @@ Zone::Zone(int width, int height):
 {
 }
 
-void Zone::fill_zone_walls() {
+void Zone::fill_zone_walls(std::vector<uint32_t> &tex) {
     for (int y = 0; y < m_height; y++) {
         for (int x = 0; x < m_width; x++) {
             entt::entity e = m_registry.create();
             m_registry.emplace<TransformComponent>(e, x, y);
-            m_registry.emplace<RenderComponent>(e, 178, COLOR_GRAY, COLOR_BLACK);
+            m_registry.emplace<RenderComponent>(e, tex, COLOR_GRAY, COLOR_BLACK);
             m_registry.emplace<DecorativeComponent>(e);
             // m_registry.emplace<NameComponent>(e, "wall", "walls", "A solid slab of stone.");
         }

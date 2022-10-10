@@ -37,6 +37,7 @@ class Game {
         SDL_Renderer*   renderer;
         SDL_Texture*    framebuffer;
         std::vector<uint32_t> m_framedata;
+        std::vector<uint32_t> m_framedata_previous;
     
     // world data
         World world;

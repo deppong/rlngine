@@ -3,6 +3,7 @@
 #define WORLD_HPP
 
 #include "zone.hpp"
+#include "atlas.hpp"
 
 class World {
     public:
@@ -13,7 +14,6 @@ class World {
 
         // should be a list or array 
         std::array<Zone, 9> Zones;
-
 
         Zone zone;
 

@@ -41,6 +41,7 @@ int Game::Init() {
 
     for (int i = 0; i < m_width*m_height; i++) {
         m_framedata.push_back(COLOR_BLACK);
+        m_framedata_previous.push_back(COLOR_BLACK);
     }
     
 
@@ -61,17 +62,19 @@ void Game::Update() {
 
     entt::entity player = world.Zones[4].m_registry.create();
     world.Zones[4].m_registry.emplace<TransformComponent>(player, 10, 10);
-    world.Zones[4].m_registry.emplace<RenderComponent>(player, '@', COLOR_BLUE, COLOR_BLACK);
+    world.Zones[4].m_registry.emplace<RenderComponent>(player, atlas.get_tile('@'), COLOR_BLUE, COLOR_BLACK);
     world.Zones[4].m_registry.emplace<PhysicsComponent>(player, 0, 0);
     world.Zones[4].m_registry.emplace<ControllableComponent>(player, true);
+
+    world.Zones[4].fill_zone_walls(atlas.get_tile(178));
 
     // main update loop
     while(!m_quit) {
 
-        // // clear framebuffer
-        // for (size_t i = 0; i < m_width * m_height; i++) {
-        //     m_framedata[i] = COLOR_BLACK;
-        // }
+        // clear framebuffer
+        for (size_t i = 0; i < m_width * m_height; i++) {
+            m_framedata[i] = COLOR_BLACK;
+        }
 
         // events
         SDL_PollEvent(&e);
@@ -79,10 +82,9 @@ void Game::Update() {
             case SDL_QUIT: m_quit=1; break;
 
             case SDL_KEYDOWN:
-            std::cout << "moved\n";
-                auto group = world.zone.m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
+                auto group = world.Zones[4].m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
                 for (auto entity : group) {
-                    auto& [control, physics] = group.get<ControllableComponent, PhysicsComponent>(entity);
+                    auto [control, physics] = group.get<ControllableComponent, PhysicsComponent>(entity);
                     if (control.inControl) {
                         switch (e.key.keysym.sym) {
                             case SDLK_h: physics.vel_x = -1; break;
@@ -100,21 +102,21 @@ void Game::Update() {
         world.Zones[4].update_physics();
 
         // render loop
-        auto group = world.zone.m_registry.group<RenderComponent, TransformComponent>();
+        auto group = world.Zones[4].m_registry.group<RenderComponent, TransformComponent>();
         for (auto entity : group) {
 
-            auto&[transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
+            auto [transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
+            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
             // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
         }
 
-        auto bg_group = world.zone.m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
+        auto bg_group = world.Zones[4].m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
         for (auto entity : bg_group) {
 
-            auto&[transform, tile] = bg_group.get<TransformComponent, RenderComponent>(entity);
+            auto [transform, tile] = bg_group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
+            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
             // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
         }
 
