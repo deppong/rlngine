@@ -26,7 +26,7 @@ int Game::Init() {
     window = NULL;
     renderer = NULL;
 
-    if(SDL_CreateWindowAndRenderer(m_width, m_height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS, &window, &renderer)) {
+    if(SDL_CreateWindowAndRenderer(m_width, m_height, SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_RESIZABLE, &window, &renderer)) {
         std::cerr << "Failed to initialize window, and renderer: " << SDL_GetError() << std::endl;
         return 1;
     }
@@ -77,7 +77,7 @@ void Game::Update() {
         }
 
         // events
-        SDL_PollEvent(&e);
+        SDL_WaitEvent(&e);
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
 

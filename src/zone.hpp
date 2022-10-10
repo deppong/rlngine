@@ -14,14 +14,7 @@ class Zone {
         Zone(int width, int height);
         ~Zone();
 
-        // copy constructor
-        // Zone(const Zone &zone) {
-        //     m_width = zone.m_width;
-        //     m_height = zone.m_height;
-        //     m_registry = zone.m_registry;
-        // };
-
-        // "map generation"?
+        // "zone generation"?
         void set_tile(entt::entity entity);
         void fill_zone(entt::entity entity);
         void fill_zone_walls(std::vector<uint32_t> &tex);

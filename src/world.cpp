@@ -2,8 +2,7 @@
 
 World::World(int width, int height, int tile_width):
     world_w(width/tile_width),
-    world_h(height/tile_width),
-    zone(width/tile_width, height/tile_width)
+    world_h(height/tile_width)
 {
     for (int i = 0; i < Zones.size(); i++) {
         Zones[i].m_width = world_w;
