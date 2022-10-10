@@ -5,7 +5,8 @@ World::World(int width, int height, int tile_width):
     world_h(height/tile_width),
     zone(width/tile_width, height/tile_width)
 {
-    zone.fill_zone_walls();
+    std::uninitialized_fill_n(Zones.begin(), 0, zone);
+    Zones[4].fill_zone_walls();
 };
 
 World::~World() {};

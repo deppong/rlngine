@@ -9,6 +9,7 @@
 
 class Zone {
     public:
+        Zone();
         Zone(int width, int height);
         ~Zone();
 
@@ -17,6 +18,8 @@ class Zone {
         void fill_zone(entt::entity entity);
         void fill_zone_walls();
 
+        // zone update
+        void update_physics();
 
         entt::registry m_registry;
 

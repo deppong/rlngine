@@ -59,16 +59,16 @@ int Game::Init() {
 void Game::Update() {
 
 
-    entt::entity player = world.zone.m_registry.create();
-    world.zone.m_registry.emplace<TransformComponent>(player, 10, 10);
-    world.zone.m_registry.emplace<RenderComponent>(player, '@', COLOR_BLUE, COLOR_BLACK);
-    world.zone.m_registry.emplace<PhysicsComponent>(player, 0, 0);
-    world.zone.m_registry.emplace<ControllableComponent>(player, true);
+    entt::entity player = world.Zones[4].m_registry.create();
+    world.Zones[4].m_registry.emplace<TransformComponent>(player, 10, 10);
+    world.Zones[4].m_registry.emplace<RenderComponent>(player, '@', COLOR_BLUE, COLOR_BLACK);
+    world.Zones[4].m_registry.emplace<PhysicsComponent>(player, 0, 0);
+    world.Zones[4].m_registry.emplace<ControllableComponent>(player, true);
 
     // main update loop
     while(!m_quit) {
 
-        // clear frambuffer
+        // // clear framebuffer
         // for (size_t i = 0; i < m_width * m_height; i++) {
         //     m_framedata[i] = COLOR_BLACK;
         // }
@@ -96,17 +96,8 @@ void Game::Update() {
             break;
         }
 
-        // physics loop
-        auto phys_group = world.zone.m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
-        for (auto entity : phys_group) {
-            auto&[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
-
-            transform.x += physics.vel_x;
-            transform.y += physics.vel_y;
-
-            physics.vel_x = 0;
-            physics.vel_y = 0;
-        }
+        // not too bad!
+        world.Zones[4].update_physics();
 
         // render loop
         auto group = world.zone.m_registry.group<RenderComponent, TransformComponent>();

@@ -1,5 +1,10 @@
 #include "zone.hpp"
 
+Zone::Zone():
+    m_width(0),
+    m_height(0)
+{}
+
 Zone::Zone(int width, int height):
     m_width(width),
     m_height(height)
@@ -15,6 +20,19 @@ void Zone::fill_zone_walls() {
             m_registry.emplace<DecorativeComponent>(e);
             // m_registry.emplace<NameComponent>(e, "wall", "walls", "A solid slab of stone.");
         }
+    }
+}
+
+void Zone::update_physics() {
+    auto phys_group = m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
+    for (auto entity : phys_group) {
+        auto&[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
+
+        transform.x += physics.vel_x;
+        transform.y += physics.vel_y;
+
+        physics.vel_x = 0;
+        physics.vel_y = 0;
     }
 }
 
