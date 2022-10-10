@@ -27,7 +27,7 @@ afterwards run the following commands on either windows or linux:
 ```
 cmake -B build -S src
 cd build
-cmake --build .
+cmake --build . --config Release
 ```
 
 On windows, be sure the SDL2.dll is in the same directory as the executable before executing. This file can be found in the lib directory
