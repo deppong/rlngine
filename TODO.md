@@ -14,14 +14,13 @@
 
 
 # Large Features next!
-- [ ] Add an entity loader from a file format. 
+- [ ] Add an entity loader from a file format. (this needs to be sooner rather than later)
 - [ ] UI system
     - [ ] basic rectangle on top of render system. 
         Render order: no_collision(floor, decorations)->collision_tiles(player enemies)->UI
 
 # Bugfixing
 - [ ] game.cpp(52,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-- [ ] other warnings possibly related to the auto &[component, component] = group.get<>(); sequence
 
 
 

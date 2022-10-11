@@ -13,7 +13,10 @@ class World {
         int world_w, world_h;
 
         // should be a list or array 
-        std::array<Zone, 9> Zones;
+        std::array<Zone, 9> zones;
+
+        // map gen?
+        void load_zone(int zone_index, Atlas &a);
 
     private:
 };

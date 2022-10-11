@@ -15,8 +15,6 @@ class Zone {
         ~Zone();
 
         // "zone generation"?
-        void set_tile(entt::entity entity);
-        void fill_zone(entt::entity entity);
         void fill_zone_walls(std::vector<uint32_t> &tex);
 
         // zone update

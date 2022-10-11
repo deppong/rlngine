@@ -41,7 +41,6 @@ int Game::Init() {
 
     for (int i = 0; i < m_width*m_height; i++) {
         m_framedata.push_back(COLOR_BLACK);
-        m_framedata_previous.push_back(COLOR_BLACK);
     }
     
 
@@ -60,13 +59,13 @@ int Game::Init() {
 void Game::Update() {
 
 
-    entt::entity player = world.Zones[4].m_registry.create();
-    world.Zones[4].m_registry.emplace<TransformComponent>(player, 10, 10);
-    world.Zones[4].m_registry.emplace<RenderComponent>(player, atlas.get_tile('@'), COLOR_BLUE, COLOR_BLACK);
-    world.Zones[4].m_registry.emplace<PhysicsComponent>(player, 0, 0);
-    world.Zones[4].m_registry.emplace<ControllableComponent>(player, true);
+    entt::entity player = world.zones[4].m_registry.create();
+    world.zones[4].m_registry.emplace<TransformComponent>(player, 10, 10);
+    world.zones[4].m_registry.emplace<RenderComponent>(player, atlas.get_tile('@'), COLOR_BLUE, COLOR_BLACK);
+    world.zones[4].m_registry.emplace<PhysicsComponent>(player, 0, 0);
+    world.zones[4].m_registry.emplace<ControllableComponent>(player, true);
 
-    world.Zones[4].fill_zone_walls(atlas.get_tile(178));
+    world.load_zone(4, atlas);
 
     // main update loop
     while(!m_quit) {
@@ -81,8 +80,9 @@ void Game::Update() {
         switch (e.type) {
             case SDL_QUIT: m_quit=1; break;
 
+            // This needs to be decoupled from the actual sdl events
             case SDL_KEYDOWN:
-                auto group = world.Zones[4].m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
+                auto group = world.zones[4].m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
                 for (auto entity : group) {
                     auto [control, physics] = group.get<ControllableComponent, PhysicsComponent>(entity);
                     if (control.inControl) {
@@ -99,32 +99,29 @@ void Game::Update() {
         }
 
         // not too bad!
-        world.Zones[4].update_physics();
+        world.zones[4].update_physics();
 
         // render loop
-        auto group = world.Zones[4].m_registry.group<RenderComponent, TransformComponent>();
+        auto group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>();
         for (auto entity : group) {
 
             auto [transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
-            // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
         }
 
-        auto bg_group = world.Zones[4].m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
+        auto bg_group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
         for (auto entity : bg_group) {
 
             auto [transform, tile] = bg_group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width, tile.color, tile.bg_color);
-            // draw_sprite(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, atlas.tex_width);
+            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
         }
 
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
         SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
-        // SDL_UnlockTexture(framebuffer);
         SDL_RenderCopy(renderer, framebuffer, NULL, NULL);
         SDL_RenderPresent(renderer);
     }
@@ -161,11 +158,11 @@ void Game::draw_sprite(std::vector<uint32_t> &texture, int x, int y, int w) {
     }
 }
 
-void Game::draw_sprite_color(std::vector<uint32_t> &texture, int x, int y, int w, uint32_t color, uint32_t bg_color) {
-    for (int i = 0; i < w; i++) {
-        for (int j = 0; j < w; j++) {
+void Game::draw_sprite_color(std::vector<uint32_t> &texture, int x, int y, uint32_t color, uint32_t bg_color) {
+    for (int i = 0; i < atlas.tex_width; i++) {
+        for (int j = 0; j < atlas.tex_width; j++) {
             if(x+i >= m_width || y+j >= m_height || x+i <= 0 || y+j <= 0) continue;
-            if (texture[i + j*w] == COLOR_WHITE) {
+            if (texture[i + j*atlas.tex_width] == COLOR_WHITE) {
                 m_framedata[(x+i) + (y+j)*m_width] = color;
             } else {
                 m_framedata[(x+i) + (y+j)*m_width] = bg_color;

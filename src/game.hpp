@@ -22,7 +22,7 @@ class Game {
         void draw_pixel(int x, int y, uint32_t color);
         void draw_rectangle(int x, int y, int w, int h, uint32_t color);
         void draw_sprite(std::vector<uint32_t> &tex, int x, int y, int w);
-        void draw_sprite_color(std::vector<uint32_t> &tex, int x, int y, int w, uint32_t color, uint32_t bg_color);
+        void draw_sprite_color(std::vector<uint32_t> &tex, int x, int y, uint32_t color, uint32_t bg_color);
 
     private:
     // game state data
@@ -37,7 +37,6 @@ class Game {
         SDL_Renderer*   renderer;
         SDL_Texture*    framebuffer;
         std::vector<uint32_t> m_framedata;
-        std::vector<uint32_t> m_framedata_previous;
     
     // world data
         World world;
