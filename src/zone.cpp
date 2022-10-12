@@ -26,7 +26,7 @@ void Zone::fill_zone_walls(std::vector<uint32_t> &tex) {
 void Zone::update_physics() {
     auto phys_group = m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
     for (auto entity : phys_group) {
-        auto&[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
+        auto [transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
 
         transform.x += physics.vel_x;
         transform.y += physics.vel_y;

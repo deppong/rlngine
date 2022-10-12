@@ -2,7 +2,12 @@
 #ifndef ZONE_HPP
 #define ZONE_HPP
 
-#include "entt.hpp"
+#ifdef __unix__
+    #include "../include/entt.hpp"
+#elif defined _WIN32
+    #include "entt.hpp"
+#endif
+
 #include "components.hpp"
 #include "atlas.hpp"
 #include "color.hpp"
