@@ -1,0 +1,33 @@
+// walls.json
+// for now this is just an example
+
+{
+    "stone_wall" : {
+        "transform" : {
+            "x" : "0",
+            "y" : "0"
+        },
+        "physics" : {
+            "vel_x" : "0",
+            "vel_y" : "0"
+        },
+        "render" : {
+            "tile"      : "179",
+            "color"     : "GRAY",
+            "bg_color"  : "BLACK"
+        },
+        "name" : {
+            "name"          : "Cobblestone Wall",
+            "name_plr"      : "Cobblestone Walls",
+            "description"   : "These walls are lined with large gray oval stones. They seem to have been placed with care"
+        },
+        "stats" : {
+            "STR" : "0",
+            "CON" : "9999",
+            "DEX" : "0",
+            "WIS" : "0",
+            "INT" : "0",
+            "CHR" : "10"
+        }
+    }
+}
