@@ -1,6 +1,3 @@
-// walls.json
-// for now this is just an example
-
 {
     "stone_wall" : {
         "transform" : {

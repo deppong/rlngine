@@ -4,9 +4,12 @@
 
 /**
  * This is by no means a fully functional or complete json parser
- * as it will really only support std::string inside; however, 
- * this really meets my use case as I can simply cast the std::string
- * to any 
+ * as it will really only support std::string inside. On top of this
+ * the actual data structure is mainly only for support a "object" id
+ * which points to a dictionary of components where the id would be a string
+ * and the value is yet another dictionary of strings key value pairs.
+ * For a better understanding look in the objects directory of this project
+ * as it will make much more sense for the objects member of this class.
 */
 
 #include <map>
@@ -21,6 +24,8 @@ class Json {
         ~Json();
         
         bool parse_file(std::string file_path);
+        bool parse_object();
+        bool parse_component(std::string &parent_object);
 
         // basically just return objects[name]; we'll see how right I am when 
         // I try to implement it haha
@@ -45,6 +50,6 @@ class Json {
 
         std::fstream file;
 
-}
+};
 
 #endif

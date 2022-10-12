@@ -32,9 +32,10 @@ class EntityFactory {
 
         // add an entity to the registry based on the file format
         // will require some reference to the file parser
-        void add_object(entt::registry &registry);
+        void add_object(std::string id, entt::registry &registry);
 
     private:
+        Json json;
 };
 
 #endif
