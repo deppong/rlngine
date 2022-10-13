@@ -10,7 +10,22 @@
  * and the value is yet another dictionary of strings key value pairs.
  * For a better understanding look in the objects directory of this project
  * as it will make much more sense for the objects member of this class.
-*/
+ * Usage: 
+ *
+ * Json json;
+ * json.parse_file("objects/walls.json");
+ *
+ * for ( const auto&[object, component] : json.objects) {
+ *      std::cout << object << " : " << std::endl;
+ *      for (const auto&[comp_id, data] : component) {
+ *          std::cout << "    " << comp_id << " : " << std::endl;
+ *          for (const auto&[key, value] : data) {
+ *              std::cout << "        " << key << " : " << value << std::endl;
+ *          }
+ *      }
+ *  }
+ *
+ */
 
 #include <map>
 #include <vector>

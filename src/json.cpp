@@ -42,13 +42,15 @@ bool Json::parse_object() {
     std::string object_name;
     char c;
     while(file.get(c)) {
-        if (c == ':') {
+        if (c == ':' ) {
             std:: cout << "Found object " << object_name << std::endl;
             if(!parse_component(object_name)) return false;
-        } else if (c == '\"' || c == ' ' || c == '\n' || c == '\t' || c == '\r') {
+        } else if (c == '\"' || c == '}' || c == ' ' || c == '\n' || c == '\t' || c == '\r') {
             continue;
         } else if (c == '}') {
             break;
+        } else if (c == ',') {
+            object_name.clear();
         } else {
             object_name.push_back(c);
         }
@@ -73,9 +75,13 @@ bool Json::parse_component(std::string &parent_object) {
         if (c == ':') {
             std::cout << "found component " << component_name << std::endl;
             parse_data(parent_object, component_name);
+            component_name.clear();
+        } else if (c == '}' ) {
             break;
         } else if (c == '\"' || c == '{' || is_whitespace(c)) {
             continue;
+        } else if (c == ',') {
+            component_name.clear();
         } else {
             component_name.push_back(c);
         }
