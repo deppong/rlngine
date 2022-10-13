@@ -40,6 +40,7 @@
 
 #include "json.hpp"
 #include "components.hpp"
+#include "color.hpp"
 
 // uh oh! this seems like a hacky and dumb solution that's probably not in the right file!!!!! (i don't care though)
 enum class COMPONENTS {
@@ -59,9 +60,9 @@ class EntityFactory {
         ~EntityFactory();
 
         // add an entity to the registry based on json, returns if it succeeded.
-        bool add_object(std::string &id, entt::registry &registry);
+        bool add_object(std::string id, entt::registry &registry);
 
-        bool load_objects(std::string &filepath);
+        bool load_objects(std::string filepath);
 
     private:
         Json json;

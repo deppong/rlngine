@@ -11,7 +11,11 @@ EntityFactory::EntityFactory() {
 };
 EntityFactory::~EntityFactory() {};
 
-bool EntityFactory::add_object(std::string &id, entt::registry &registry) {
+bool EntityFactory::load_objects(std::string filepath) {
+    return json.parse_file(filepath);
+}
+
+bool EntityFactory::add_object(std::string id, entt::registry &registry) {
     if (json.objects.count(id) == 0) {
         std::cerr << "object \"" << id <<  "\" not found, maybe not loaded?" << std::endl;
         return false;
@@ -21,14 +25,19 @@ bool EntityFactory::add_object(std::string &id, entt::registry &registry) {
 
     for (const auto& [component_id, component_data] : json.objects[id]) {
         if (component_id_map.count(component_id) == 0 ) {
-            std::cerr << "component \"" << id <<  "\" not found" << std::endl;
-            registry.destroy(entity);
+            std::cerr << "component \"" << component_id <<  "\" not found" << std::endl;
             return false;
         }
 
+        // std::cout << "adding object " << id << "..." << std::endl;
+
+        // for (const auto& [key, value] : component_data) {
+        //     std::cout << key << " : " << value << std::endl;
+        // }
+
         
-        // surely this won't be error prone or hard to debug!
-        switch(component_id_map[component_id]) {
+        // surely this won't be error prone or hard to debug! (wow it is!)
+        switch(component_id_map.at(component_id)) {
             case COMPONENTS::TRANSFORM: 
                 registry.emplace<TransformComponent>(entity, std::stoi(component_data.at("x")), std::stoi(component_data.at("y")));
             break;
@@ -38,7 +47,8 @@ bool EntityFactory::add_object(std::string &id, entt::registry &registry) {
             break;
 
             case COMPONENTS::RENDER: 
-                registry.emplace<RenderComponent>(entity, std::stoi(component_data.at("tile")), std::stoi(component_data.at("color")), std::stoi(component_data.at("bg_color")));
+
+                registry.emplace<RenderComponent>(entity, std::stoi(component_data.at("tile")), std::stoi(component_data.at("color")), COLOR_BLACK);
             break;
 
             case COMPONENTS::NAME:
@@ -46,7 +56,7 @@ bool EntityFactory::add_object(std::string &id, entt::registry &registry) {
             break;
 
             case COMPONENTS::STATS: 
-                registry.emplace<RenderComponent>(entity, std::stoi(component_data.at("STR")), std::stoi(component_data.at("CON")), std::stoi(component_data.at("DEX")));
+                registry.emplace<StatsComponent>(entity, std::stoi(component_data.at("STR")), std::stoi(component_data.at("CON")), std::stoi(component_data.at("DEX")));
             break;
 
             case COMPONENTS::CONTROLLABLE: 
@@ -60,6 +70,8 @@ bool EntityFactory::add_object(std::string &id, entt::registry &registry) {
             default: break;
         }
     }
+
+    // std::cout << "finished" << std::endl;
 
     return true;
 }

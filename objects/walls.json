@@ -9,9 +9,9 @@
             "vel_y" : "0"
         },
         "render" : {
-            "tile"      : "179",
-            "color"     : "COLOR_GRAY",
-            "bg_color"  : "COLOR_BLACK"
+            "tile"      : "178",
+            "color"     : "200",
+            "bg_color"  : "-16777216"
         },
         "name" : {
             "name"          : "Cobblestone Wall",
@@ -25,6 +25,26 @@
             "WIS" : "0",
             "INT" : "0",
             "CHR" : "10"
+        },
+        "decorative" : {
+        }
+    },
+    "player" : {
+        "transform" : {
+            "x" : "10",
+            "y" : "10"
+        },
+        "physics" : {
+            "vel_x" : "0",
+            "vel_y" : "0"
+        },
+        "render" : {
+            "tile"      : "64",
+            "color"     : "23000000",
+            "bg_color"  : "-16777216"
+        },
+        "controllable" : {
+            "in_control" : "1"
         }
     }
 }

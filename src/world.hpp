@@ -3,7 +3,7 @@
 #define WORLD_HPP
 
 #include "zone.hpp"
-#include "atlas.hpp"
+#include "entity_factory.hpp"
 
 class World {
     public:
@@ -16,8 +16,9 @@ class World {
         std::array<Zone, 9> zones;
 
         // map gen?
-        void load_zone(int zone_index, Atlas &a);
+        void load_zone(int zone_index);
 
+        EntityFactory factory;
     private:
 };
 

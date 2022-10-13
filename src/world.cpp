@@ -2,25 +2,36 @@
 
 World::World(int width, int height, int tile_width):
     world_w(width/tile_width),
-    world_h(height/tile_width)
+    world_h(height/tile_width),
+    factory()
 {
     for (int i = 0; i < zones.size(); i++) {
         zones[i].m_width = world_w;
         zones[i].m_height = world_h;
     }
+
+    factory.load_objects("../../objects/walls.json");
+    std::cout << "loaded objects" << std::endl;
 };
 
 World::~World() {};
 
-void World::load_zone(int zone_index, Atlas &a) {
-    for (int y = 0; y < zones[zone_index].m_height; y++) {
-        for (int x = 0; x < zones[zone_index].m_width; x++) {
-            entt::entity e = zones[zone_index].m_registry.create();
-            zones[zone_index].m_registry.emplace<TransformComponent>(e, x, y);
-            zones[zone_index].m_registry.emplace<RenderComponent>(e, '.', COLOR_GRAY, COLOR_BLACK);
-            zones[zone_index].m_registry.emplace<DecorativeComponent>(e);
-            // m_registry.emplace<NameComponent>(e, "wall", "walls", "A solid slab of stone.");
+void World::load_zone(int zone_index) {
+    srand(time(0));
+
+    for (int i = 0; i < zones[zone_index].m_height * zones[zone_index].m_width; i++) {
+        if(!factory.add_object("stone_wall", zones[zone_index].m_registry)) {
+            std::cerr << "failed to add object stone_wall to registry" << std::endl;
         }
     }
+
+    auto view = zones[zone_index].m_registry.view<TransformComponent, DecorativeComponent>();
+    for (auto entity : view) {
+        auto &transform = view.get<TransformComponent>(entity);
+
+        transform.x = rand() % zones[zone_index].m_width;
+        transform.y = rand() % zones[zone_index].m_width;
+    }
+
 
 }
