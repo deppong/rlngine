@@ -10,7 +10,7 @@ World::World(int width, int height, int tile_width):
         zones[i].m_height = world_h;
     }
 
-    factory.load_objects("../../objects/walls.json");
+    factory.load_objects("../../objects/objects.json");
     std::cout << "loaded objects" << std::endl;
 };
 
