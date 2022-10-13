@@ -19,19 +19,16 @@ World::~World() {};
 void World::load_zone(int zone_index) {
     srand(time(0));
 
-    for (int i = 0; i < zones[zone_index].m_height * zones[zone_index].m_width; i++) {
-        if(!factory.add_object("stone_wall", zones[zone_index].m_registry)) {
-            std::cerr << "failed to add object stone_wall to registry" << std::endl;
+    for (int y = 0; y < zones[zone_index].m_height; y++) {
+        for (int x = 0; x < zones[zone_index].m_width; x++) {
+            auto entity = factory.add_object("stone_wall", zones[zone_index].m_registry);
+            auto &transform = zones[zone_index].m_registry.get<TransformComponent>(entity);
+            transform.x = x;
+            transform.y = y;
         }
     }
 
-    auto view = zones[zone_index].m_registry.view<TransformComponent, DecorativeComponent>();
-    for (auto entity : view) {
-        auto &transform = view.get<TransformComponent>(entity);
-
-        transform.x = rand() % zones[zone_index].m_width;
-        transform.y = rand() % zones[zone_index].m_width;
-    }
+    zones[zone_index].make_room(10, 10, 20, 20);
 
 
 }

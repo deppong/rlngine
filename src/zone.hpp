@@ -20,7 +20,7 @@ class Zone {
         ~Zone();
 
         // "zone generation"?
-        void fill_zone_walls(std::vector<uint32_t> &tex);
+        void make_room(int x, int y, int w, int h);
 
         // zone update
         void update_physics();

@@ -11,17 +11,21 @@ Zone::Zone(int width, int height):
 {
 }
 
-// void Zone::fill_zone_walls(std::vector<uint32_t> &tex) {
-//     for (int y = 0; y < m_height; y++) {
-//         for (int x = 0; x < m_width; x++) {
-//             entt::entity e = m_registry.create();
-//             m_registry.emplace<TransformComponent>(e, x, y);
-//             m_registry.emplace<RenderComponent>(e, tex, COLOR_GRAY, COLOR_BLACK);
-//             m_registry.emplace<DecorativeComponent>(e);
-//             // m_registry.emplace<NameComponent>(e, "wall", "walls", "A solid slab of stone.");
-//         }
-//     }
-// }
+void Zone::make_room(int x, int y, int w, int h) {
+    for (int i = 0; i < w; i++) {
+        for(int j = 0; j < h; j++) {
+            if (x+i >= m_width || y+j >= m_height || x+i <= 0 || y+j <= 0) continue;
+
+            auto view = m_registry.view<TransformComponent, DecorativeComponent>();
+            for (auto entity : view) {
+                auto &transform = view.get<TransformComponent>(entity);
+                if (transform.x == x+i && transform.y == y+j) {
+                    m_registry.destroy(entity);
+                }
+            }
+        }
+    }
+}
 
 void Zone::update_physics() {
     auto phys_group = m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);

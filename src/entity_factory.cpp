@@ -15,10 +15,10 @@ bool EntityFactory::load_objects(std::string filepath) {
     return json.parse_file(filepath);
 }
 
-bool EntityFactory::add_object(std::string id, entt::registry &registry) {
+entt::entity EntityFactory::add_object(std::string id, entt::registry &registry) {
     if (json.objects.count(id) == 0) {
         std::cerr << "object \"" << id <<  "\" not found, maybe not loaded?" << std::endl;
-        return false;
+        return entt::null;
     }
 
     entt::entity entity = registry.create();
@@ -26,7 +26,7 @@ bool EntityFactory::add_object(std::string id, entt::registry &registry) {
     for (const auto& [component_id, component_data] : json.objects[id]) {
         if (component_id_map.count(component_id) == 0 ) {
             std::cerr << "component \"" << component_id <<  "\" not found" << std::endl;
-            return false;
+            return entt::null;
         }
 
         // std::cout << "adding object " << id << "..." << std::endl;
@@ -73,5 +73,5 @@ bool EntityFactory::add_object(std::string id, entt::registry &registry) {
 
     // std::cout << "finished" << std::endl;
 
-    return true;
+    return entity;
 }

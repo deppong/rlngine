@@ -60,7 +60,7 @@ class EntityFactory {
         ~EntityFactory();
 
         // add an entity to the registry based on json, returns if it succeeded.
-        bool add_object(std::string id, entt::registry &registry);
+        entt::entity add_object(std::string id, entt::registry &registry);
 
         bool load_objects(std::string filepath);
 
