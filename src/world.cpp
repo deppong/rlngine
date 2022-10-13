@@ -17,7 +17,7 @@ void World::load_zone(int zone_index, Atlas &a) {
         for (int x = 0; x < zones[zone_index].m_width; x++) {
             entt::entity e = zones[zone_index].m_registry.create();
             zones[zone_index].m_registry.emplace<TransformComponent>(e, x, y);
-            zones[zone_index].m_registry.emplace<RenderComponent>(e, a.get_tile('.'), COLOR_GRAY, COLOR_BLACK);
+            zones[zone_index].m_registry.emplace<RenderComponent>(e, '.', COLOR_GRAY, COLOR_BLACK);
             zones[zone_index].m_registry.emplace<DecorativeComponent>(e);
             // m_registry.emplace<NameComponent>(e, "wall", "walls", "A solid slab of stone.");
         }

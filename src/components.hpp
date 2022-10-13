@@ -14,8 +14,6 @@ struct PhysicsComponent {
     PhysicsComponent() = default;
     PhysicsComponent(const int& vel_x, const int& vel_y):
         vel_x(vel_x), vel_y(vel_y) {};
-    PhysicsComponent(const int& vel_x, const int& vel_y, const bool& inControl):
-        vel_x(vel_x), vel_y(vel_y) {};
 };
 
 struct TransformComponent {
@@ -27,11 +25,11 @@ struct TransformComponent {
 };
 
 struct RenderComponent  {
-    std::vector<uint32_t> tile;
+    int tile;
     uint32_t color, bg_color;
 
     RenderComponent() = default;
-    RenderComponent(const std::vector<uint32_t> &chr, const uint32_t& color, const uint32_t& bg_color):
+    RenderComponent(const int &chr, const uint32_t& color, const uint32_t& bg_color):
         tile(chr), color(color), bg_color(bg_color){};
 };
 

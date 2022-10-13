@@ -39,9 +39,6 @@ class Json {
         ~Json();
         
         bool parse_file(std::string file_path);
-        bool parse_object();
-        bool parse_component(std::string &parent_object);
-        bool parse_data(std::string &object_id, std::string &component_id);
 
         // basically just return objects[name]; we'll see how right I am when 
         // I try to implement it haha
@@ -64,6 +61,10 @@ class Json {
          * or could be read as:
          * walls.json
          */
+
+        bool parse_object();
+        bool parse_component(std::string &parent_object);
+        bool parse_data(std::string &object_id, std::string &component_id);
 
         bool is_whitespace(char c);
         std::fstream file;

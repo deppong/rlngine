@@ -61,7 +61,7 @@ void Game::Update() {
 
     entt::entity player = world.zones[4].m_registry.create();
     world.zones[4].m_registry.emplace<TransformComponent>(player, 10, 10);
-    world.zones[4].m_registry.emplace<RenderComponent>(player, atlas.get_tile('@'), COLOR_BLUE, COLOR_BLACK);
+    world.zones[4].m_registry.emplace<RenderComponent>(player, '@', COLOR_BLUE, COLOR_BLACK);
     world.zones[4].m_registry.emplace<PhysicsComponent>(player, 0, 0);
     world.zones[4].m_registry.emplace<ControllableComponent>(player, true);
 
@@ -107,7 +107,7 @@ void Game::Update() {
 
             auto [transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
+            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
         }
 
         auto bg_group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
@@ -115,7 +115,7 @@ void Game::Update() {
 
             auto [transform, tile] = bg_group.get<TransformComponent, RenderComponent>(entity);
 
-            draw_sprite_color(tile.tile, transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
+            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
         }
 
 

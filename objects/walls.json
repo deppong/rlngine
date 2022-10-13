@@ -10,8 +10,8 @@
         },
         "render" : {
             "tile"      : "179",
-            "color"     : "GRAY",
-            "bg_color"  : "BLACK"
+            "color"     : "COLOR_GRAY",
+            "bg_color"  : "COLOR_BLACK"
         },
         "name" : {
             "name"          : "Cobblestone Wall",

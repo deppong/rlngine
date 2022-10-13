@@ -39,51 +39,51 @@ bool Json::parse_file(std::string file_path) {
 }
 
 bool Json::parse_object() {
-    std::string object_name;
+    std::string object_id;
     char c;
     while(file.get(c)) {
         if (c == ':' ) {
-            std:: cout << "Found object " << object_name << std::endl;
-            if(!parse_component(object_name)) return false;
+            std:: cout << "Found object " << object_id << std::endl;
+            if(!parse_component(object_id)) return false;
         } else if (c == '\"' || c == '}' || c == ' ' || c == '\n' || c == '\t' || c == '\r') {
             continue;
         } else if (c == '}') {
             break;
         } else if (c == ',') {
-            object_name.clear();
+            object_id.clear();
         } else {
-            object_name.push_back(c);
+            object_id.push_back(c);
         }
     }
     return true;
 }
 
-bool Json::parse_component(std::string &parent_object) {
-    if (parent_object.empty()) {
-        std::cerr << "object name is empty" << std::endl;
+bool Json::parse_component(std::string &object_id) {
+    if (object_id.empty()) {
+        std::cerr << "object id is empty" << std::endl;
         return false;
     }
 
-    if (objects.count(parent_object)>0) {
-        std::cerr << "object duplicate: " << parent_object << std::endl;
+    if (objects.count(object_id)>0) {
+        std::cerr << "object duplicate: " << object_id << std::endl;
         return false;
     }
 
-    std::string component_name;
+    std::string component_id;
     char c;
     while(file.get(c)) {
         if (c == ':') {
-            std::cout << "found component " << component_name << std::endl;
-            if(!parse_data(parent_object, component_name)) {component_name.clear();continue;}
-            component_name.clear();
+            std::cout << "found component " << component_id << std::endl;
+            if(!parse_data(object_id, component_id)) {component_id.clear();continue;}
+            component_id.clear();
         } else if (c == '}' ) {
             break;
         } else if (c == '\"' || c == '{' || is_whitespace(c)) {
             continue;
         } else if (c == ',') {
-            component_name.clear();
+            component_id.clear();
         } else {
-            component_name.push_back(c);
+            component_id.push_back(c);
         }
     }
 
