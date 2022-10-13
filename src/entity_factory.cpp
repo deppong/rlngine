@@ -1,4 +1,5 @@
 #include "entity_factory.hpp"
+#include <bitset>
 
 EntityFactory::EntityFactory() {
     component_id_map["transform"]       = COMPONENTS::TRANSFORM;
@@ -39,28 +40,47 @@ entt::entity EntityFactory::add_object(std::string id, entt::registry &registry)
         // surely this won't be error prone or hard to debug! (wow it is!)
         switch(component_id_map.at(component_id)) {
             case COMPONENTS::TRANSFORM: 
-                registry.emplace<TransformComponent>(entity, std::stoi(component_data.at("x")), std::stoi(component_data.at("y")));
+                registry.emplace<TransformComponent>(entity, 
+                    std::stoi(component_data.at("x")), 
+                    std::stoi(component_data.at("y"))
+                );
             break;
 
             case COMPONENTS::PHYSICS:
-                registry.emplace<PhysicsComponent>(entity, std::stoi(component_data.at("vel_x")), std::stoi(component_data.at("vel_y")));
+                registry.emplace<PhysicsComponent>(entity, 
+                    std::stoi(component_data.at("vel_x")), 
+                    std::stoi(component_data.at("vel_y"))
+                );
             break;
 
             case COMPONENTS::RENDER: 
+                registry.emplace<RenderComponent>(entity, 
+                    std::stoi(component_data.at("tile")), 
+                    std::stoi(component_data.at("color")), 
+                    std::stoi(component_data.at("bg_color"))
+                );
 
-                registry.emplace<RenderComponent>(entity, std::stoi(component_data.at("tile")), std::stoi(component_data.at("color")), COLOR_BLACK);
             break;
-
             case COMPONENTS::NAME:
-                registry.emplace<NameComponent>(entity, component_data.at("name"), component_data.at("name_plr"), component_data.at("description"));
+                registry.emplace<NameComponent>(entity, 
+                    component_data.at("name"), 
+                    component_data.at("name_plr"), 
+                    component_data.at("description")
+                );
             break;
 
             case COMPONENTS::STATS: 
-                registry.emplace<StatsComponent>(entity, std::stoi(component_data.at("STR")), std::stoi(component_data.at("CON")), std::stoi(component_data.at("DEX")));
+                registry.emplace<StatsComponent>(entity, 
+                    std::stoi(component_data.at("STR")), 
+                    std::stoi(component_data.at("CON")), 
+                    std::stoi(component_data.at("DEX"))
+                );
             break;
 
             case COMPONENTS::CONTROLLABLE: 
-                registry.emplace<ControllableComponent>(entity, std::stoi(component_data.at("in_control")));
+                registry.emplace<ControllableComponent>(entity, 
+                    std::stoi(component_data.at("in_control"))
+                );
             break;
 
             case COMPONENTS::DECORATIVE: 

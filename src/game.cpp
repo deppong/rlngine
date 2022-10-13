@@ -112,7 +112,7 @@ void Game::Update() {
             auto [transform, tile] = group.get<TransformComponent, RenderComponent>(entity);
 
 
-            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
+            draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, COLORS[tile.color], COLORS[tile.bg_color]);
         }
 
         // auto bg_group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
@@ -167,7 +167,7 @@ void Game::draw_sprite_color(std::vector<uint32_t> &texture, int x, int y, uint3
     for (int i = 0; i < atlas.tex_width; i++) {
         for (int j = 0; j < atlas.tex_width; j++) {
             if(x+i >= m_width || y+j >= m_height || x+i <= 0 || y+j <= 0) continue;
-            if (texture[i + j*atlas.tex_width] == COLOR_WHITE) {
+            if (texture[i + j*atlas.tex_width] == COLORS[COLOR_WHITE]) {
                 m_framedata[(x+i) + (y+j)*m_width] = color;
             } else {
                 m_framedata[(x+i) + (y+j)*m_width] = bg_color;
