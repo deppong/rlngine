@@ -17,7 +17,6 @@ World::World(int width, int height, int tile_width):
 World::~World() {};
 
 void World::load_zone(int zone_index) {
-    srand(time(0));
 
     for (int y = 0; y < zones[zone_index].m_height; y++) {
         for (int x = 0; x < zones[zone_index].m_width; x++) {
@@ -29,6 +28,5 @@ void World::load_zone(int zone_index) {
     }
 
     zones[zone_index].make_room(10, 10, 20, 20);
-
 
 }

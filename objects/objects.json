@@ -10,8 +10,8 @@
         },
         "render" : {
             "tile"      : "178",
-            "color"     : "9",
-            "bg_color"  : "0"
+            "color"     : "11",
+            "bg_color"  : "3"
         },
         "name" : {
             "name"          : "Cobblestone Wall",
@@ -45,6 +45,24 @@
         },
         "controllable" : {
             "in_control" : "1"
+        }
+    },
+    "snake" : {
+        "transform" : {
+            "x" : "20",
+            "y" : "20"
+        },
+        "physics" : {
+            "vel_x" : "0",
+            "vel_y" : "0"
+        },
+        "render" : {
+            "tile"      : "21",
+            "color"     : "4",
+            "bg_color"  : "0"
+        },
+        "controllable" : {
+            "in_control" : "0"
         }
     }
 }

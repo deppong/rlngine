@@ -66,10 +66,12 @@ void Game::Update() {
     // world.zones[4].m_registry.emplace<ControllableComponent>(player, true);
 
     world.factory.add_object("player", world.zones[4].m_registry);
+    world.factory.add_object("snake", world.zones[4].m_registry);
 
     std::cout << "added player" << std::endl;
 
     world.load_zone(4);
+
 
     // main update loop
     while(!m_quit) {
