@@ -26,10 +26,13 @@ class Json {
         bool parse_file(std::string file_path);
         bool parse_object();
         bool parse_component(std::string &parent_object);
+        bool parse_data(std::string &object_id, std::string &component_id);
 
         // basically just return objects[name]; we'll see how right I am when 
         // I try to implement it haha
         std::map<std::string, std::map<std::string, std::string>> get_object_data(std::string name);
+
+        std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> objects;
 
     private:
         /**
@@ -46,8 +49,8 @@ class Json {
          * or could be read as:
          * walls.json
          */
-        std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> objects;
 
+        bool is_whitespace(char c);
         std::fstream file;
 
 };

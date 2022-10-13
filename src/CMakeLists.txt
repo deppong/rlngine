@@ -14,6 +14,7 @@ add_executable(rlngine
     color.cpp
     world.cpp
     zone.cpp
+    jason.cpp
 )
 
 if(MSVC)
