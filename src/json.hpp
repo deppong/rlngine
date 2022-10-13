@@ -10,7 +10,7 @@
  * and the value is yet another dictionary of strings key value pairs.
  * For a better understanding look in the objects directory of this project
  * as it will make much more sense for the objects member of this class.
- * Usage: 
+ * Usage:
  *
  * Json json;
  * json.parse_file("objects/walls.json");

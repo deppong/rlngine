@@ -24,8 +24,8 @@ bool Json::parse_file(std::string file_path) {
             // and possibly just go to a seperate function
             case '{' : 
                 if(!parse_object()) {
-                    std::cerr << "error reading file " << file_path << std::endl;
-                    return false;
+                    std::cerr << "error reading object " << std::endl;
+                    continue;
                 }
                 break;
             default: break;
@@ -74,7 +74,7 @@ bool Json::parse_component(std::string &parent_object) {
     while(file.get(c)) {
         if (c == ':') {
             std::cout << "found component " << component_name << std::endl;
-            parse_data(parent_object, component_name);
+            if(!parse_data(parent_object, component_name)) {component_name.clear();continue;}
             component_name.clear();
         } else if (c == '}' ) {
             break;
@@ -114,7 +114,9 @@ bool Json::parse_data(std::string &object_id, std::string &component_id) {
             data_id.clear();
             break;
         // ignore whitespace
-        } else if (c == '\"' || c == '{' || is_whitespace(c)) {
+        } else if (parsing_key && (c == '\"' || c == '{' || is_whitespace(c))) {
+            continue;
+        } else if (c == '\"' || c == '{' || c == '\n' || c == '\t' || c == '\r' ) {
             continue;
         // if we've reached the value to the key, value pair
         }  else if (c == ':') {
@@ -130,8 +132,10 @@ bool Json::parse_data(std::string &object_id, std::string &component_id) {
              * because of how awesome maps are it will automatically add
              * all of these values to the map if they don't exist 
              * (which they shouldn't)
+             * try_emplace will insert as long as it doesn't, and not overwrite any
+             * values that are already present
             */
-            objects[object_id][component_id][data_id] = data_value;
+            objects[object_id][component_id].try_emplace(data_id, data_value);
             parsing_key = true;
             data_value.clear();
             data_id.clear();
