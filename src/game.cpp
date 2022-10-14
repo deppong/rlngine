@@ -58,17 +58,8 @@ int Game::Init() {
 
 void Game::Update() {
 
-
-    // entt::entity player = world.zones[4].m_registry.create();
-    // world.zones[4].m_registry.emplace<TransformComponent>(player, 10, 10);
-    // world.zones[4].m_registry.emplace<RenderComponent>(player, '@', COLOR_BLUE, COLOR_BLACK);
-    // world.zones[4].m_registry.emplace<PhysicsComponent>(player, 0, 0);
-    // world.zones[4].m_registry.emplace<ControllableComponent>(player, true);
-
     world.factory.add_object("player", world.zones[4].m_registry);
     world.factory.add_object("snake", world.zones[4].m_registry);
-
-    std::cout << "added player" << std::endl;
 
     world.load_zone(4);
 
@@ -116,15 +107,6 @@ void Game::Update() {
 
             draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, COLORS[tile.color], COLORS[tile.bg_color]);
         }
-
-        // auto bg_group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>({}, entt::exclude<DecorativeComponent>);
-        // for (auto entity : bg_group) {
-
-        //     auto [transform, tile] = bg_group.get<TransformComponent, RenderComponent>(entity);
-
-        //     draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, tile.color, tile.bg_color);
-        // }
-
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
