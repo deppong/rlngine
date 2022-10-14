@@ -20,7 +20,7 @@ Atlas::Atlas(int texture_width):
 
 Atlas::~Atlas() {};
 
-std::vector<uint32_t> Atlas::get_tile(int tile) {
+std::vector<uint32_t>& Atlas::get_tile(int tile) {
     return textures.at(tile);
 }
 
