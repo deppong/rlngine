@@ -6,7 +6,8 @@
         },
         "physics" : {
             "vel_x" : "0",
-            "vel_y" : "0"
+            "vel_y" : "0",
+            "solid" : "1"
         },
         "render" : {
             "tile"      : "178",
@@ -36,7 +37,8 @@
         },
         "physics" : {
             "vel_x" : "0",
-            "vel_y" : "0"
+            "vel_y" : "0",
+            "solid" : "1"
         },
         "render" : {
             "tile"      : "64",
@@ -54,7 +56,8 @@
         },
         "physics" : {
             "vel_x" : "0",
-            "vel_y" : "0"
+            "vel_y" : "0",
+            "solid" : "1"
         },
         "render" : {
             "tile"      : "21",

@@ -37,7 +37,14 @@ entt::entity EntityFactory::add_object(std::string id, entt::registry &registry)
         // }
 
         
-        // surely this won't be error prone or hard to debug! (wow it is!)
+        // TODO: SERIOUS!
+        // This std::map::at() will throw errors if not present. 
+        // if in the json file, the certain field is not present
+        // the game will compile and run and then just stop.
+        // this needs to seriously be replaced with something else.
+        // look into std::map::find() and then checking if it's there or not
+        // if it's not, then set it that value to a default value of 
+        // some kind. I would do that now, but I'm sure I can figure it out later.
         switch(component_id_map.at(component_id)) {
             case COMPONENTS::TRANSFORM: 
                 registry.emplace<TransformComponent>(entity, 
@@ -49,7 +56,8 @@ entt::entity EntityFactory::add_object(std::string id, entt::registry &registry)
             case COMPONENTS::PHYSICS:
                 registry.emplace<PhysicsComponent>(entity, 
                     std::stoi(component_data.at("vel_x")), 
-                    std::stoi(component_data.at("vel_y"))
+                    std::stoi(component_data.at("vel_y")),
+                    std::stoi(component_data.at("solid"))
                 );
             break;
 
