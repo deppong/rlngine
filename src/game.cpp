@@ -94,6 +94,11 @@ void Game::Update() {
                             case SDLK_j: physics.vel_y =  1; break;
                             case SDLK_k: physics.vel_y = -1; break;
                             case SDLK_l: physics.vel_x =  1; break;
+                            case SDLK_y: physics.vel_x = -1; physics.vel_y = -1; break;
+                            case SDLK_u: physics.vel_x =  1; physics.vel_y = -1; break;
+                            case SDLK_b: physics.vel_x = -1; physics.vel_y =  1; break;
+                            case SDLK_n: physics.vel_x =  1; physics.vel_y =  1; break;
+                            case SDLK_PERIOD: break; // wait command, wait one turn
                         }
 
                     }
