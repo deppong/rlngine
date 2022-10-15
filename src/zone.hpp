@@ -21,6 +21,7 @@ class Zone {
 
         // "zone generation"?
         void make_room(int x, int y, int w, int h);
+        bool is_walkable(int x, int y);
 
         // zone update
         void update_physics();

@@ -27,16 +27,43 @@ void Zone::make_room(int x, int y, int w, int h) {
     }
 }
 
+bool Zone::is_walkable(int x, int y) {
+    bool walkable = true;
+    auto view = m_registry.view<TransformComponent, PhysicsComponent>();
+    for (auto entity : view) {
+        auto [transform, physics] = view.get<TransformComponent, PhysicsComponent>(entity);
+        if (transform.x == x && transform.y == y && physics.solid) {
+            walkable = false;
+            break;
+        }
+    }
+
+    return walkable;
+}
+
 void Zone::update_physics() {
     auto phys_group = m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
     for (auto entity : phys_group) {
         auto [transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
 
-        transform.x += physics.vel_x;
-        transform.y += physics.vel_y;
+        // are we even gonna move?
+        if (physics.vel_x != 0 || physics.vel_y != 0) {
+            int desired_x = transform.x + physics.vel_x;
+            int desired_y = transform.y + physics.vel_y;
 
-        physics.vel_x = 0;
-        physics.vel_y = 0;
+            // this is naive because if there is a tile in the way 
+            // of the desired path then we are just gonna blink over it.
+            // what will have to happen next is likely a djikstra map
+            // of the zones, and then set the target for each object to 
+            // their desired x and y coords, likely with some AI component
+            if (is_walkable(desired_x, desired_y)) {
+                transform.x = desired_x;
+                transform.y = desired_y;
+            }
+
+            physics.vel_x = 0;
+            physics.vel_y = 0;
+        }
     }
 }
 
