@@ -12,6 +12,8 @@ class World {
 
         int world_w, world_h;
 
+        bool new_turn;
+
         // should be a list or array 
         std::array<Zone, 9> zones;
 

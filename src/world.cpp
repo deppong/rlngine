@@ -3,6 +3,7 @@
 World::World(int width, int height, int tile_width):
     world_w(width/tile_width),
     world_h(height/tile_width),
+    new_turn(false),
     factory()
 {
     for (int i = 0; i < zones.size(); i++) {

@@ -9,6 +9,7 @@
 #endif
 #include "atlas.hpp"
 #include "world.hpp"
+#include <random>
 
 class Game {
     public:

@@ -50,18 +50,24 @@ int Game::Init() {
         std::cerr << "Failed to load texture" << std::endl;
         return 1;
     }
-
-    srand(time(0));
+    
 
     return 0;
 }
 
 void Game::Update() {
 
-    world.factory.add_object("player", world.zones[4].m_registry);
-    world.factory.add_object("snake", world.zones[4].m_registry);
+    // random number initialization 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    auto player = world.factory.add_object("player", world.zones[4].m_registry);
+    auto snake = world.factory.add_object("snake", world.zones[4].m_registry);
 
     world.load_zone(4);
+
+    // ai random movement range distribution
+    std::uniform_int_distribution<> distr(-1, 1);
 
 
     // main update loop
@@ -92,11 +98,20 @@ void Game::Update() {
 
                     }
                 }
+                world.new_turn = true;
             break;
         }
 
-        // not too bad!
-        world.zones[4].update_physics();
+        if (world.new_turn) {
+            // Placeholder for ai 
+            auto &physics = world.zones[4].m_registry.get<PhysicsComponent>(snake);
+            physics.vel_x = distr(gen);
+            physics.vel_y = distr(gen);
+
+            world.zones[4].update_physics();
+
+            world.new_turn = false;
+        }
 
         // render loop
         auto group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>();

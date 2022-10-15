@@ -1,26 +1,31 @@
 # TODO
 
 # Right now!
-- [ ] rework the way that zones hold things and probably add in a new kind of component to show that there are floors.
+- [ ] Add a floor component, which just has a transform and render. Perhaps have the zone hold an abstract method of how things are held. For now, we can just iterate through all of the entities that have a transform and physics and see if there is a solid object.
 
-- [x] Fix the set_color method in atlas! This is super slow and super bad
-    - This is now somewhat fixed, to the point where when we are coloring the texture or not it is still as slow as it would be anyways
-- [x] can't index elements past 127 from atlas.get_tile() through the render component... I WAS CASTING IT TO A CONST CHAR REFERENCE :(((())))
 
 # Minor Features next
-- [ ] add some sort of map or scenes for each section of the world
-    - [ ] have more than one zone, that can be loaded when the controlled entity walks off of the screen/zone
-    - [ ] map generation! (can't be a rogue-like right?)
-
+These will come in handy for the FOV and zone generation
+- [ ] utility functions. 
+    - [ ] distance function
+    - [ ] Bresenham's line algorithm
+- [x] add some sort of map or scenes for each section of the world
+    - [x] have more than one zone, that can be loaded when the controlled entity walks off of the screen/zone
 
 # Large Features next!
-- [ ] Add an entity loader from a file format. (this needs to be sooner rather than later)
+- [ ] zone generation! (can't be a rogue-like right?)
+    - [ ] BSP
+- [ ] Djikstra Map
+- [ ] FOV
+    - [ ] use the line algorithm to cast rays and see if there are any entities that have a block light component. Or change the naming of the physics "solid" to a collidable component, rather than a flag within the component.
+- [x] Add an entity loader from a file format. (this needs to be sooner rather than later)
 - [ ] UI system
     - [ ] basic rectangle on top of render system. 
-        Render order: no_collision(floor, decorations)->collision_tiles(player enemies)->UI
+        Render order: no_collision(floor, decorations)->collision_tiles(player, enemies)->UI
 
 # Bugfixing
 - [ ] game.cpp(52,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+
 
 
 
