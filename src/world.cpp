@@ -17,6 +17,25 @@ World::World(int width, int height, int tile_width):
 
 World::~World() {};
 
+void World::update_physics() {
+
+    zones[4].update_physics();
+
+    // get player
+    auto view = zones[4].m_registry.view<ControllableComponent>();
+    entt::entity player;
+    for (auto entity : view) {
+        auto controllable = view.get<ControllableComponent>(entity);
+        if (controllable.inControl) {
+            player = entity;
+            break;
+        }
+    }
+
+    // did the player exit the current zone?
+
+}
+
 void World::load_zone(int zone_index) {
 
     for (int y = 0; y < zones[zone_index].m_height; y++) {

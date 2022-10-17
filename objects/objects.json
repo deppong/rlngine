@@ -20,15 +20,14 @@
             "description"   : "These walls are lined with large gray oval stones. They seem to have been placed with care"
         },
         "stats" : {
-            "STR" : "0",
             "CON" : "9999",
+            "STR" : "0",
             "DEX" : "0",
             "WIS" : "0",
             "INT" : "0",
             "CHR" : "10"
         },
-        "decorative" : {
-        }
+        "decorative" : {}
     },
     "player" : {
         "transform" : {

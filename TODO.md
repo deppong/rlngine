@@ -22,6 +22,7 @@ These will come in handy for the FOV and zone generation
 - [ ] UI system
     - [ ] basic rectangle on top of render system. 
         Render order: no_collision(floor, decorations)->collision_tiles(player, enemies)->UI
+- [ ] Action system. a component that will have some data or even a function of some kind. a base struct action that can be inherited. see cataclysm-dda and how they use their action system.
 
 # Bugfixing
 - [ ] game.cpp(52,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data

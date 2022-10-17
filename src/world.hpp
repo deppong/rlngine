@@ -12,6 +12,8 @@ class World {
 
         int world_w, world_h;
 
+        void update_physics();
+
         bool new_turn;
 
         // should be a list or array 
