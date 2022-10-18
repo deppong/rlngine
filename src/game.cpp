@@ -113,7 +113,7 @@ void Game::Update() {
             physics.vel_x = distr(gen);
             physics.vel_y = distr(gen);
 
-            world.zones[4].update_physics();
+            world.update_physics();
 
             world.new_turn = false;
         }

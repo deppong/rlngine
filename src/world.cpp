@@ -50,33 +50,46 @@ void World::update_physics() {
     auto transform = zones[4].m_registry.get<TransformComponent>(player);
     // WEST 
     if (transform.x < 0) {
-        
+        std::cout << "Exited west" << std::endl;
     // NORTH
     } else if (transform.y < 0) {
-
+        std::cout << "Exited north" << std::endl;
     // EAST
     } else if (transform.x > zones[4].m_width) {
-
+        std::cout << "Exited east" << std::endl;
     // SOUTH
     } else if (transform.y > zones[4].m_height) {
+        std::cout << "Exited south" << std::endl;
 
     }
 }
 
 void World::construct_zone(int zone_index) {
+    int zone_h = zones[zone_index].m_height;
+    int zone_w = zones[zone_index].m_width;
+
+    std::mt19937 gen(zone_index);
+    std::uniform_int_distribution<> distr(0, 2);
 
     // TODO: This entire function should really be local to the zone once proper
     // world gen is actually done. This could be mocked up pretty soon!
-    for (int y = 0; y < zones[zone_index].m_height; y++) {
-        for (int x = 0; x < zones[zone_index].m_width; x++) {
-            auto entity = factory.add_object("stone_wall", zones[zone_index].m_registry);
-            auto &transform = zones[zone_index].m_registry.get<TransformComponent>(entity);
-            transform.x = x;
-            transform.y = y;
+    for (int y = 0; y < zone_h; y++) {
+        for (int x = 0; x < zone_w; x++) {
+            entt::entity entity;
+
+            switch(distr(gen)) {
+                case 0: entity = factory.add_object("stone_wall", zones[zone_index].m_registry); break;
+                case 1: entity = factory.add_object("dirt_wall", zones[zone_index].m_registry); break;
+                case 2: entity = entt::null; break;
+            }
+
+            if (entity != entt::null) {
+                auto &transform = zones[zone_index].m_registry.get<TransformComponent>(entity);
+                transform.x = x;
+                transform.y = y;
+            }
         }
     }
 
     zones[zone_index].make_room(10, 10, 20, 20);
-    zones[zone_index].make_room(30, 15, 1, 8);
-
 }

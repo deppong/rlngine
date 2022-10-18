@@ -4,6 +4,11 @@
 
 #include "zone.hpp"
 #include "entity_factory.hpp"
+#include <random>
+
+struct world_coord {
+    int x, y; 
+};
 
 class World {
     public:
@@ -16,10 +21,16 @@ class World {
 
         bool new_turn;
 
-        // should be a list or array 
+        // this is the area around the player that will all be processed
+        // together. The actual world should be a map of positions and
+        // zones.
         std::array<Zone, 9> zones;
+        std::map<world_coord, Zone> zone_map;
 
         // map gen?
+        // 
+
+        // old 
         void construct_zone(int zone_index);
         void load_zone(int zone_index);
         void reload_world();

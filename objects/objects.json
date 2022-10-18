@@ -11,7 +11,7 @@
         },
         "render" : {
             "tile"      : "178",
-            "color"     : "11",
+            "color"     : "8",
             "bg_color"  : "3"
         },
         "name" : {
@@ -19,13 +19,27 @@
             "name_plr"      : "Cobblestone Walls",
             "description"   : "These walls are lined with large gray oval stones. They seem to have been placed with care"
         },
-        "stats" : {
-            "CON" : "9999",
-            "STR" : "0",
-            "DEX" : "0",
-            "WIS" : "0",
-            "INT" : "0",
-            "CHR" : "10"
+        "decorative" : {}
+    },
+    "dirt_wall" : {
+        "transform" : {
+            "x" : "0",
+            "y" : "0"
+        },
+        "physics" : {
+            "vel_x" : "0",
+            "vel_y" : "0",
+            "solid" : "1"
+        },
+        "render" : {
+            "tile"      : "177",
+            "color"     : "4",
+            "bg_color"  : "1"
+        },
+        "name" : {
+            "name"          : "Dirt Wall",
+            "name_plr"      : "Dirt Walls",
+            "description"   : "A mound of brown dirt, littered with pebbles."
         },
         "decorative" : {}
     },
