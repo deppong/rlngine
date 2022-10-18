@@ -69,7 +69,7 @@ void World::construct_zone(int zone_index) {
     int zone_w = zones[zone_index].m_width;
 
     std::mt19937 gen(zone_index);
-    std::uniform_int_distribution<> distr(0, 2);
+    std::uniform_int_distribution<> distr(0, 100);
 
     // TODO: This entire function should really be local to the zone once proper
     // world gen is actually done. This could be mocked up pretty soon!
@@ -77,11 +77,20 @@ void World::construct_zone(int zone_index) {
         for (int x = 0; x < zone_w; x++) {
             entt::entity entity;
 
-            switch(distr(gen)) {
-                case 0: entity = factory.add_object("stone_wall", zones[zone_index].m_registry); break;
-                case 1: entity = factory.add_object("dirt_wall", zones[zone_index].m_registry); break;
-                case 2: entity = entt::null; break;
+            int n = distr(gen);
+            if (n > 0 && n <= 25) {
+                entity = factory.add_object("stone_wall", zones[zone_index].m_registry);
+            } else if (n > 25 && n <= 40) {
+                entity = factory.add_object("dirt_wall", zones[zone_index].m_registry);
+            } else {
+                entity = entt::null;
             }
+
+            // switch(distr(gen)) {
+            //     case 0: entity = factory.add_object("stone_wall", zones[zone_index].m_registry); break;
+            //     case 1: entity = factory.add_object("dirt_wall", zones[zone_index].m_registry); break;
+            //     case 2: entity = entt::null; break;
+            // }
 
             if (entity != entt::null) {
                 auto &transform = zones[zone_index].m_registry.get<TransformComponent>(entity);
