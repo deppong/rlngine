@@ -12,8 +12,8 @@ Zone::Zone(int width, int height):
 }
 
 void Zone::make_room(int x, int y, int w, int h) {
-    for (int i = 0; i < w; i++) {
-        for(int j = 0; j < h; j++) {
+    for (int i = 0; i < h; i++) {
+        for(int j = 0; j < w; j++) {
             if (x+i >= m_width || y+j >= m_height || x+i <= 0 || y+j <= 0) continue;
 
             auto view = m_registry.view<TransformComponent, DecorativeComponent>();

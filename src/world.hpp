@@ -20,7 +20,9 @@ class World {
         std::array<Zone, 9> zones;
 
         // map gen?
+        void construct_zone(int zone_index);
         void load_zone(int zone_index);
+        void reload_world();
 
         EntityFactory factory;
     private:

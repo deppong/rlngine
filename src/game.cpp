@@ -64,7 +64,7 @@ void Game::Update() {
     auto player = world.factory.add_object("player", world.zones[4].m_registry);
     auto snake = world.factory.add_object("snake", world.zones[4].m_registry);
 
-    world.load_zone(4);
+    world.construct_zone(4);
 
     // ai random movement range distribution
     std::uniform_int_distribution<> distr(-1, 1);
