@@ -62,9 +62,12 @@ void Game::Update() {
     std::mt19937 gen(rd());
 
     auto player = world.factory.add_object("player", world.zones[4].m_registry);
-    auto snake = world.factory.add_object("snake", world.zones[4].m_registry);
+    // auto snake = world.factory.add_object("snake", world.zones[4].m_registry);
 
-    world.construct_zone(4);
+    // should just construct zones as we enter them
+    for (int i = 0; i < 9; i++) {
+        world.construct_zone(i);
+    }
 
     // ai random movement range distribution
     std::uniform_int_distribution<> distr(-1, 1);
@@ -85,7 +88,7 @@ void Game::Update() {
 
             // This needs to be decoupled from the actual sdl events
             case SDL_KEYDOWN:
-                auto group = world.zones[4].m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
+                auto group = world.zones[world.current_zone].m_registry.group<ControllableComponent>(entt::get<PhysicsComponent>);
                 for (auto entity : group) {
                     auto [control, physics] = group.get<ControllableComponent, PhysicsComponent>(entity);
                     if (control.inControl) {
@@ -99,6 +102,15 @@ void Game::Update() {
                             case SDLK_b: physics.vel_x = -1; physics.vel_y =  1; break;
                             case SDLK_n: physics.vel_x =  1; physics.vel_y =  1; break;
                             case SDLK_PERIOD: break; // wait command, wait one turn
+                            case SDLK_2: 
+                                world.current_zone = 2;
+                                std::cout << world.current_zone << std::endl;
+                                break;
+                            case SDLK_4: 
+                                world.current_zone = 4;
+                                std::cout << world.current_zone << std::endl;
+                                break;
+
                         }
 
                     }
@@ -109,9 +121,9 @@ void Game::Update() {
 
         if (world.new_turn) {
             // Placeholder for ai 
-            auto &physics = world.zones[4].m_registry.get<PhysicsComponent>(snake);
-            physics.vel_x = distr(gen);
-            physics.vel_y = distr(gen);
+            // auto &physics = world.zones[world.current_zone].m_registry.get<PhysicsComponent>(snake);
+            // physics.vel_x = distr(gen);
+            // physics.vel_y = distr(gen);
 
             world.update_physics();
 
@@ -119,7 +131,7 @@ void Game::Update() {
         }
 
         // render loop
-        auto group = world.zones[4].m_registry.group<RenderComponent, TransformComponent>();
+        auto group = world.zones[world.current_zone].m_registry.group<RenderComponent, TransformComponent>();
         for (auto entity : group) {
 
             auto [transform, tile] = group.get<TransformComponent, RenderComponent>(entity);

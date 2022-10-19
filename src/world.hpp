@@ -25,6 +25,7 @@ class World {
         // together. The actual world should be a map of positions and
         // zones.
         std::array<Zone, 9> zones;
+        int current_zone;
         std::map<world_coord, Zone> zone_map;
 
         // map gen?

@@ -4,6 +4,7 @@ World::World(int width, int height, int tile_width):
     world_w(width/tile_width),
     world_h(height/tile_width),
     new_turn(false),
+    current_zone(4),
     factory()
 {
     for (int i = 0; i < zones.size(); i++) {
@@ -19,10 +20,10 @@ World::~World() {};
 
 void World::update_physics() {
 
-    zones[4].update_physics();
+    zones[current_zone].update_physics();
 
     // get player
-    auto view = zones[4].m_registry.view<ControllableComponent>();
+    auto view = zones[current_zone].m_registry.view<ControllableComponent>();
     entt::entity player;
     for (auto entity : view) {
         auto controllable = view.get<ControllableComponent>(entity);
@@ -47,20 +48,43 @@ void World::update_physics() {
      * 6 7 8  
     */
     // did the player exit the current zone?
-    auto transform = zones[4].m_registry.get<TransformComponent>(player);
+    auto &transform = zones[current_zone].m_registry.get<TransformComponent>(player);
     // WEST 
     if (transform.x < 0) {
         std::cout << "Exited west" << std::endl;
+        transform.x = world_w;
+ 
+        zones[current_zone].m_registry.destroy(player);
+        current_zone--;
+        factory.add_object("player", zones[current_zone].m_registry);
     // NORTH
     } else if (transform.y < 0) {
         std::cout << "Exited north" << std::endl;
+
+        transform.y = world_h - 1;
+ 
+        zones[current_zone].m_registry.destroy(player);
+        current_zone-=3;
+        factory.add_object("player", zones[current_zone].m_registry);
+
     // EAST
-    } else if (transform.x > zones[4].m_width) {
+    } else if (transform.x > zones[current_zone].m_width) {
         std::cout << "Exited east" << std::endl;
+        transform.x = 0;
+ 
+        zones[current_zone].m_registry.destroy(player);
+        current_zone++;
+        factory.add_object("player", zones[current_zone].m_registry);
+
     // SOUTH
-    } else if (transform.y > zones[4].m_height) {
+    } else if (transform.y > zones[current_zone].m_height) {
         std::cout << "Exited south" << std::endl;
 
+        transform.y = 0;
+
+        zones[current_zone].m_registry.destroy(player);
+        current_zone+=3;
+        factory.add_object("player", zones[current_zone].m_registry);
     }
 }
 
