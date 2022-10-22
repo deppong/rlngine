@@ -4,6 +4,7 @@ World::World(int width, int height, int tile_width):
     world_w(width/tile_width),
     world_h(height/tile_width),
     new_turn(false),
+    world_coords(0, 0),
     current_zone(4),
     factory()
 {
@@ -14,6 +15,8 @@ World::World(int width, int height, int tile_width):
 
     factory.load_objects("../../objects/objects.json");
     std::cout << "loaded objects" << std::endl;
+
+    construct_zone(0, 0);
 };
 
 World::~World() {};
@@ -29,12 +32,27 @@ void World::copyEntity(entt::entity dst, entt::entity source, entt::registry &cu
     std::cout << "done" << std::endl;
 }
 
+Zone& World::get_zone(int x, int y) {
+    return *zone_map.at(x + y * MAX_WORLD_WIDTH);
+}
+
+entt::registry& World::current_registry() {
+    return get_zone(world_coords.x, world_coords.y).m_registry;
+}
+
+bool World::zone_exists(int x, int y) {
+    if (zone_map.find(x + y*MAX_WORLD_WIDTH) != zone_map.end()) {
+        return true;
+    } 
+    return false;
+}
+
 void World::update_physics() {
 
-    zones[current_zone].update_physics();
+    get_zone(world_coords.x, world_coords.y).update_physics();
 
     // get player
-    auto view = zones[current_zone].m_registry.view<ControllableComponent>();
+    auto view = current_registry().view<ControllableComponent>();
     entt::entity player;
     for (auto entity : view) {
         auto controllable = view.get<ControllableComponent>(entity);
@@ -45,74 +63,93 @@ void World::update_physics() {
     }
 
     // did the player exit the current zone?
-    auto &p_transform = zones[current_zone].m_registry.get<TransformComponent>(player);
+    auto &p_transform = current_registry().get<TransformComponent>(player);
 
     if (p_transform.x < 0) {
         p_transform.x = world_w - 1;
 
-        auto player_copy = factory.add_object("player", zones[current_zone-1].m_registry);
+        construct_zone(world_coords.x - 1, world_coords.y);
 
-        copyEntity(player_copy, player, zones[current_zone].m_registry, zones[current_zone-1].m_registry);
- 
-        zones[current_zone].m_registry.destroy(player);
-        current_zone--;
-        std::cout << "Exited west" << std::endl;
+        auto player_copy = factory.add_object("player", get_zone(world_coords.x - 1, world_coords.y).m_registry);
+
+        copyEntity(player_copy, player, current_registry(), get_zone(world_coords.x - 1, world_coords.y).m_registry);
+
+        current_registry().destroy(player);
+
+        world_coords.x += -1;
+        world_coords.y +=  0;
+        std::cout << "Changed to the southern zone" << std::endl;
     } else if (p_transform.y < 0) {
         p_transform.y = world_h - 1;
 
-        auto player_copy = factory.add_object("player", zones[current_zone-3].m_registry);
+        construct_zone(world_coords.x, world_coords.y - 1);
 
-        copyEntity(player_copy, player, zones[current_zone].m_registry, zones[current_zone-3].m_registry);
+        auto player_copy = factory.add_object("player", get_zone(world_coords.x, world_coords.y - 1).m_registry);
 
-        zones[current_zone].m_registry.destroy(player);
-        current_zone-=3;
-        std::cout << "Exited north" << std::endl;
+        copyEntity(player_copy, player, current_registry(), get_zone(world_coords.x, world_coords.y - 1).m_registry);
 
-    } else if (p_transform.x > zones[current_zone].m_width - 1) {
+        current_registry().destroy(player);
+
+        world_coords.x +=  0;
+        world_coords.y += -1;
+        std::cout << "Changed to the northern zone" << std::endl;
+
+    } else if (p_transform.x > get_zone(world_coords.x, world_coords.y).m_width - 1) {
         p_transform.x = 0;
 
-        auto player_copy = factory.add_object("player", zones[current_zone+1].m_registry);
+        construct_zone(world_coords.x + 1, world_coords.y);
 
-        copyEntity(player_copy, player, zones[current_zone].m_registry, zones[current_zone+1].m_registry);
- 
-        zones[current_zone].m_registry.destroy(player);
-        current_zone++;
-        std::cout << "Exited east" << std::endl;
+        auto player_copy = factory.add_object("player", get_zone(world_coords.x + 1, world_coords.y).m_registry);
 
-    } else if (p_transform.y > zones[current_zone].m_height - 1) {
+        copyEntity(player_copy, player, current_registry(), get_zone(world_coords.x + 1, world_coords.y).m_registry);
+
+        current_registry().destroy(player);
+
+        world_coords.x +=  1;
+        world_coords.y +=  0;
+        std::cout << "Changed to the eastern zone" << std::endl;
+
+    } else if (p_transform.y > get_zone(world_coords.x, world_coords.y).m_height - 1) {
         p_transform.y = 0;
 
-        auto player_copy = factory.add_object("player", zones[current_zone+3].m_registry);
+        construct_zone(world_coords.x, world_coords.y + 1);
 
-        copyEntity(player_copy, player, zones[current_zone].m_registry, zones[current_zone+3].m_registry);
+        auto player_copy = factory.add_object("player", get_zone(world_coords.x, world_coords.y + 1).m_registry);
 
-        zones[current_zone].m_registry.destroy(player);
-        current_zone+=3;
-        std::cout << "Exited south" << std::endl;
+        copyEntity(player_copy, player, current_registry(), get_zone(world_coords.x, world_coords.y + 1).m_registry);
+
+        current_registry().destroy(player);
+
+        world_coords.x +=  0;
+        world_coords.y +=  1;
+        std::cout << "Changed to the southern zone" << std::endl;
     }
 
-    std::cout << "current_zone: " << current_zone << std::endl;
+    std::cout << "current_zone: " << world_coords.x << "," << world_coords.y << std::endl;
 
 }
 
-void World::construct_zone(int zone_index) {
-    int zone_h = zones[zone_index].m_height;
-    int zone_w = zones[zone_index].m_width;
+void World::construct_zone(int world_x, int world_y) {
+    if (zone_exists(world_x, world_y)) {
+        return;
+    }
+    zone_map.emplace(world_x + world_y * MAX_WORLD_WIDTH, new Zone(world_w, world_h));
+    std::cout << "added zone" << std::endl;
 
-    std::mt19937 gen(zone_index);
+    std::mt19937 gen((world_x ^ world_y) << 4);
     std::uniform_int_distribution<> distr(0, 100);
 
     // TODO: This entire function should really be local to the zone once proper
     // world gen is actually done. This could be mocked up pretty soon!
-    for (int y = 0; y < zone_h; y++) {
-        for (int x = 0; x < zone_w; x++) {
+    for (int y = 0; y < world_h; y++) {
+        for (int x = 0; x < world_w; x++) {
             entt::entity entity;
 
             int n = distr(gen);
             if (n > 0 && n <= 25) {
-                entity = factory.add_object("stone_wall", zones[zone_index].m_registry);
+                entity = factory.add_object("stone_wall", get_zone(world_x, world_y).m_registry);
             } else if (n > 25 && n <= 40) {
-                entity = factory.add_object("dirt_wall", zones[zone_index].m_registry);
+                entity = factory.add_object("dirt_wall", get_zone(world_x, world_y).m_registry);
             } else {
                 entity = entt::null;
             }
@@ -124,12 +161,12 @@ void World::construct_zone(int zone_index) {
             // }
 
             if (entity != entt::null) {
-                auto &transform = zones[zone_index].m_registry.get<TransformComponent>(entity);
+                auto &transform = get_zone(world_x, world_y).m_registry.get<TransformComponent>(entity);
                 transform.x = x;
                 transform.y = y;
             }
         }
     }
 
-    zones[zone_index].make_room(10, 10, 20, 20);
+    get_zone(world_x, world_y).make_room(10, 10, 20, 20);
 }

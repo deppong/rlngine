@@ -6,8 +6,12 @@
 #include "entity_factory.hpp"
 #include <random>
 
-struct world_coord {
-    int x, y; 
+static const int MAX_WORLD_WIDTH = 256;
+
+struct vec2 {
+    int x, y;
+    vec2() = default;
+    vec2(int x, int y) : x(x), y(y) {};
 };
 
 class World {
@@ -26,7 +30,13 @@ class World {
         // zones.
         std::array<Zone, 9> zones;
         int current_zone;
-        std::map<world_coord, Zone> zone_map;
+
+        vec2 world_coords;
+        std::map<int, Zone*> zone_map;
+
+        entt::registry& current_registry();
+        Zone& get_zone(int x, int y);
+        bool zone_exists(int x, int y);
 
         void copyEntity(entt::entity dst, entt::entity source, entt::registry &curr, entt::registry &dest);
 
@@ -34,7 +44,7 @@ class World {
         // 
 
         // old 
-        void construct_zone(int zone_index);
+        void construct_zone(int x, int y);
         void load_zone(int zone_index);
         void reload_world();
 
