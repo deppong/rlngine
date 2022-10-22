@@ -28,6 +28,8 @@ class World {
         int current_zone;
         std::map<world_coord, Zone> zone_map;
 
+        void copyEntity(entt::entity dst, entt::entity source, entt::registry &curr, entt::registry &dest);
+
         // map gen?
         // 
 

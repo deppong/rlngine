@@ -1,6 +1,8 @@
 # TODO
 
 # Right now!
+- [ ] CHANGE THE WAY WE HOLD ZONES!!! right now it's a 1d array, all we have to do is make it using the map that we have in place in the world.hpp this should be very easy to acomplish just will take a little bit of refactoring!
+
 - [ ] Add a floor component, which just has a transform and render. Perhaps have the zone hold an abstract method of how things are held. For now, we can just iterate through all of the entities that have a transform and physics and see if there is a solid object.
 
 
@@ -9,7 +11,7 @@ These will come in handy for the FOV and zone generation
 - [ ] utility functions. 
     - [ ] distance function
     - [ ] Bresenham's line algorithm
-- [x] add some sort of map or scenes for each section of the world
+ of map or scenes for each section of the world
     - [x] have more than one zone, that can be loaded when the controlled entity walks off of the screen/zone
 
 # Large Features next!

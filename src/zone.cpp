@@ -44,7 +44,7 @@ bool Zone::is_walkable(int x, int y) {
 void Zone::update_physics() {
     auto phys_group = m_registry.group<>(entt::get<TransformComponent, PhysicsComponent>);
     for (auto entity : phys_group) {
-        auto [transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
+        auto &[transform, physics] = phys_group.get<TransformComponent, PhysicsComponent>(entity);
 
         // are we even gonna move?
         if (physics.vel_x != 0 || physics.vel_y != 0) {

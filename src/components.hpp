@@ -24,7 +24,7 @@ struct TransformComponent {
         x(x), y(y) {};
 };
 
-struct RenderComponent  {
+struct RenderComponent {
     int tile;
     uint32_t color, bg_color;
 
@@ -33,7 +33,7 @@ struct RenderComponent  {
         tile(chr), color(color), bg_color(bg_color){};
 };
 
-struct ControllableComponent {
+struct ControllableComponent{
     bool inControl;
 
     ControllableComponent() = default;
@@ -44,10 +44,10 @@ struct ControllableComponent {
 
 
 // this is not being used correctly at the moment
-struct DecorativeComponent {
+struct DecorativeComponent{
 };
 
-struct StatsComponent {
+struct StatsComponent{
     int STR, DEX, CON;
 
     StatsComponent() = default;
@@ -56,7 +56,7 @@ struct StatsComponent {
     {};
 };
 
-struct NameComponent {
+struct NameComponent{
     std::string name, name_plr, description;
 
     NameComponent() = default;
