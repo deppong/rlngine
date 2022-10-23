@@ -131,6 +131,11 @@ void Game::Update() {
             draw_sprite_color(atlas.get_tile(tile.tile), transform.x * atlas.tex_width, transform.y * atlas.tex_width, COLORS[tile.color], COLORS[tile.bg_color]);
         }
 
+        std::string wx = std::to_string(world.world_coords.x);
+        std::string wy = std::to_string(world.world_coords.y);
+        ui_rect(0, 0, 10, 2);
+        put_text(wx + "," + wy, 1, 1, COLORS[COLOR_WHITE], COLORS[COLOR_BLACK]);
+
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
         SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
@@ -181,4 +186,53 @@ void Game::draw_sprite_color(std::vector<uint32_t> &texture, int x, int y, uint3
             }
         }
     }
+}
+
+void Game::put_text(const std::string &text, int x, int y, uint32_t color, uint32_t bg_color) {
+    int i = 0;
+    for (char const &c : text) {
+        draw_sprite_color(atlas.get_tile((int)c), (x + i) * atlas.tex_width, y * atlas.tex_width, color, bg_color);
+        i++;
+    }
+}
+
+/**
+ * 201, 205, 187
+ * 186, ' ', 186
+ * 200, 205, 188
+*/
+
+void Game::ui_rect(int x, int y, int w, int h) {
+    if (h < 1 || w < 1) {
+        std::cout << "ui box must be at least a 1x1. be sure the all the parameters make sense for a line of text to fit inside" << std::endl;
+        return;
+    }
+
+    int i=0, j=0;
+
+    draw_sprite(atlas.get_tile(201), x * atlas.tex_width, y * atlas.tex_width, atlas.tex_width);
+
+    for (i = 1; i < w; i++) {
+        draw_sprite(atlas.get_tile(205), (x+i) * atlas.tex_width, y * atlas.tex_width, atlas.tex_width);
+    }
+
+    draw_sprite(atlas.get_tile(187), (x+i) * atlas.tex_width, y * atlas.tex_width, atlas.tex_width);
+
+    for (j = 1; j < h; j++) {
+        draw_sprite(atlas.get_tile(186), x * atlas.tex_width, (y+j) * atlas.tex_width, atlas.tex_width);
+        for (i=1; i < w; i++) {
+            draw_sprite(atlas.get_tile(' '), (x+i) * atlas.tex_width, (y+j) * atlas.tex_width, atlas.tex_width);
+        }
+        draw_sprite(atlas.get_tile(186), (x+i) * atlas.tex_width, (y+j) * atlas.tex_width, atlas.tex_width);
+
+    }
+
+    draw_sprite(atlas.get_tile(200), x * atlas.tex_width, (y+j) * atlas.tex_width, atlas.tex_width);
+
+    for (i = 1; i < w; i++) {
+        draw_sprite(atlas.get_tile(205), (x+i) * atlas.tex_width, (y+j) * atlas.tex_width, atlas.tex_width);
+    }
+
+    draw_sprite(atlas.get_tile(188), (x+i) * atlas.tex_width, (y+j) * atlas.tex_width, atlas.tex_width);
+
 }

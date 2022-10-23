@@ -23,6 +23,8 @@ class Game {
         void draw_rectangle(int x, int y, int w, int h, uint32_t color);
         void draw_sprite(std::vector<uint32_t> &tex, int x, int y, int w);
         void draw_sprite_color(std::vector<uint32_t> &tex, int x, int y, uint32_t color, uint32_t bg_color);
+        void put_text(const std::string &text, int x, int y, uint32_t color, uint32_t bg_color);
+        void ui_rect(int x, int y, int w, int h);
 
     private:
     // game state data
