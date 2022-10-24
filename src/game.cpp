@@ -133,7 +133,6 @@ void Game::Update() {
 
         std::string wx = std::to_string(world.world_coords.x);
         std::string wy = std::to_string(world.world_coords.y);
-        ui_rect(0, 0, 10, 2);
         put_text(wx + "," + wy, 1, 1, COLORS[COLOR_WHITE], COLORS[COLOR_BLACK]);
 
         SDL_RenderClear(renderer);
@@ -189,6 +188,7 @@ void Game::draw_sprite_color(std::vector<uint32_t> &texture, int x, int y, uint3
 }
 
 void Game::put_text(const std::string &text, int x, int y, uint32_t color, uint32_t bg_color) {
+    ui_rect(x-1, y-1, text.length()+1, 2);
     int i = 0;
     for (char const &c : text) {
         draw_sprite_color(atlas.get_tile((int)c), (x + i) * atlas.tex_width, y * atlas.tex_width, color, bg_color);
