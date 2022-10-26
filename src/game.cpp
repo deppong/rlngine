@@ -140,12 +140,12 @@ void Game::Update() {
 
         int h = SDL_GetWindowSurface(window)->h;
         int w = SDL_GetWindowSurface(window)->w;
-        SDL_Rect game_view = {0, 0, h*.75, h};
-        SDL_Rect minimap = {w*.75, 0, w*.25, w*.25};
+        SDL_Rect game_view = {0, 0, h, h};
+        // SDL_Rect minimap = {w*.75, 0, w*.25, w*.25};
 
         SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
         SDL_RenderCopy(renderer, framebuffer, NULL, &game_view);
-        SDL_RenderCopy(renderer, framebuffer, NULL, &minimap);
+        // SDL_RenderCopy(renderer, framebuffer, NULL, &minimap);
         SDL_RenderPresent(renderer);
     }
 }

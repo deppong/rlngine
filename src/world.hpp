@@ -37,6 +37,7 @@ class World {
         entt::registry& current_registry();
         Zone& get_zone(int x, int y);
         bool zone_exists(int x, int y);
+        entt::entity get_player();
 
         void copyEntity(entt::entity dst, entt::entity source, entt::registry &curr, entt::registry &dest);
 

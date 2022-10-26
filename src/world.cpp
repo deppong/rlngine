@@ -47,11 +47,7 @@ bool World::zone_exists(int x, int y) {
     return false;
 }
 
-void World::update_physics() {
-
-    get_zone(world_coords.x, world_coords.y).update_physics();
-
-    // get player
+entt::entity World::get_player() {
     auto view = current_registry().view<ControllableComponent>();
     entt::entity player;
     for (auto entity : view) {
@@ -61,6 +57,18 @@ void World::update_physics() {
             break;
         }
     }
+    return player;
+}
+
+void World::update_physics() {
+
+    get_zone(world_coords.x, world_coords.y).update_physics();
+
+    // get player
+    entt::entity player = get_player();
+
+    // ideally this would be for every single entity in that has a transform that changed
+    // look into entt::observer
 
     // did the player exit the current zone?
     auto &p_transform = current_registry().get<TransformComponent>(player);
@@ -134,6 +142,7 @@ void World::construct_zone(int world_x, int world_y) {
         return;
     }
     zone_map.emplace(world_x + world_y * MAX_WORLD_WIDTH, new Zone(world_w, world_h));
+
     std::cout << "added zone" << std::endl;
 
     std::mt19937 gen((world_x ^ world_y) << 4);
