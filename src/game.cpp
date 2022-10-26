@@ -6,7 +6,8 @@ Game::Game(int width, int height, char* window_title):
     m_window_title(window_title),
     m_quit(0),
     atlas(16),
-    world(width, height, 16)
+    world(width, height, 16),
+    ui(width, height)
 {
 }
 
@@ -32,9 +33,17 @@ int Game::Init() {
     }
 
     framebuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, m_width, m_height);
-    SDL_SetTextureBlendMode(framebuffer, SDL_BLENDMODE_NONE);
+    SDL_SetTextureBlendMode(framebuffer, SDL_BLENDMODE_BLEND);
+
+    ui.framebuffer = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, ui.m_width, ui.m_height);
+    SDL_SetTextureBlendMode(ui.framebuffer, SDL_BLENDMODE_BLEND);
 
     if(!framebuffer) {
+        std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    if(!ui.framebuffer) {
         std::cerr << "Failed to create texture: " << SDL_GetError() << std::endl;
         return 1;
     }
@@ -78,7 +87,8 @@ void Game::Update() {
 
         // clear framebuffer
         for (size_t i = 0; i < m_width * m_height; i++) {
-            m_framedata[i] = COLOR_BLACK;
+            m_framedata[i] = COLORS[COLOR_CLEAR];
+            ui.framedata[i] = COLORS[COLOR_CLEAR];
         }
 
         // events
@@ -133,19 +143,24 @@ void Game::Update() {
 
         std::string wx = std::to_string(world.world_coords.x);
         std::string wy = std::to_string(world.world_coords.y);
-        put_text(wx + "," + wy, 1, 1, COLORS[COLOR_WHITE], COLORS[COLOR_BLACK]);
+        ui.put_text(wx + "," + wy, 1, 1, COLORS[COLOR_WHITE], COLORS[COLOR_BLACK]);
 
         SDL_RenderClear(renderer);
         // place m_framedata to the framebuffer
 
-        int h = SDL_GetWindowSurface(window)->h;
         int w = SDL_GetWindowSurface(window)->w;
-        SDL_Rect game_view = {0, 0, h, h};
-        // SDL_Rect minimap = {w*.75, 0, w*.25, w*.25};
+        int h = SDL_GetWindowSurface(window)->h;
+        const SDL_Rect world_view = {0, 0, h, h};
+        const SDL_Rect ui_view = {0, 0, h, h};
+        const SDL_Rect minimap = {w*.75, 0, w*.25, w*.25};
 
         SDL_UpdateTexture(framebuffer, NULL, static_cast<void*>(m_framedata.data()), m_width * 4);
-        SDL_RenderCopy(renderer, framebuffer, NULL, &game_view);
-        // SDL_RenderCopy(renderer, framebuffer, NULL, &minimap);
+        SDL_UpdateTexture(ui.framebuffer, NULL, static_cast<void*>(ui.framedata.data()), ui.m_width * 4);
+
+        SDL_RenderCopy(renderer, framebuffer, NULL, &world_view);
+        SDL_RenderCopy(renderer, framebuffer, NULL, &minimap);
+        SDL_RenderCopy(renderer, ui.framebuffer, NULL, &ui_view);
+
         SDL_RenderPresent(renderer);
     }
 }

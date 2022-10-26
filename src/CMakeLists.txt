@@ -16,6 +16,7 @@ add_executable(rlngine
     zone.cpp
     json.cpp
     entity_factory.cpp
+    ui.cpp
 )
 
 if(MSVC)

@@ -26,8 +26,9 @@ static const uint32_t COLOR_YELLOW  = 12;
 static const uint32_t COLOR_FUCHSIA = 13;
 static const uint32_t COLOR_AQUA    = 14;
 static const uint32_t COLOR_WHITE   = 15;
+static const uint32_t COLOR_CLEAR   = 16;
 
-static const std::array<uint32_t, 16> COLORS = {
+static const std::array<uint32_t, 17> COLORS = {
     pack_color(  0,   0,   0, 255),
     pack_color(128,   0,   0, 255),
     pack_color(  0, 128,   0, 255),
@@ -43,7 +44,8 @@ static const std::array<uint32_t, 16> COLORS = {
     pack_color(255, 255,   0, 255),
     pack_color(255,   0, 255, 255),
     pack_color(  0, 255, 255, 255),
-    pack_color(255, 255, 255, 255)
+    pack_color(255, 255, 255, 255),
+    pack_color(  0,   0,   0,   0)
 };
 
 #endif

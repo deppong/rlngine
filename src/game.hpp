@@ -9,6 +9,7 @@
 #endif
 #include "atlas.hpp"
 #include "world.hpp"
+#include "ui.hpp"
 
 class Game {
     public:
@@ -42,6 +43,9 @@ class Game {
     
     // world data
         World world;
+    
+    // UI
+        UI ui;
 
 };
 
